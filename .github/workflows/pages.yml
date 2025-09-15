@@ -30,8 +30,8 @@ jobs:
       - name: Prepare site content
         run: |
           mkdir -p site-content
-          cp -r * site-content/
-          cp -r key-definitions/* site-content/key-definitions/
+          cp -r !(site-content) site-content/ || true
+          cp -r key-definitions/* site-content/key-definitions/ || true
 
       - name: Debug file tree
         run: ls -R site-content

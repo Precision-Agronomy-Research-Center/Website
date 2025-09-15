@@ -40,6 +40,7 @@ jobs:
           done
 
           echo "Copying Key-Definitions files..."
+          mkdir -p site-content/key-definitions
           cp -r Key_Definitions/* site-content/key-definitions/ || true
 
       - name: Debug file tree

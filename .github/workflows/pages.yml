@@ -29,22 +29,22 @@ jobs:
 
       - name: Prepare site content
         run: |
-        mkdir -p site-content
+          mkdir -p site-content
 
-        echo "Copying Website repo files..."
-        shopt -s dotglob nullglob
-        for f in *; do
-          if [ "$f" != "site-content" ] && [ "$f" != "key-definitions" ]; then
-            cp -r "$f" site-content/
+          echo "Copying Website repo files..."
+          shopt -s dotglob nullglob
+          for f in *; do
+            if [ "$f" != "site-content" ] && [ "$f" != "key-definitions" ]; then
+              cp -r "$f" site-content/
+            fi
+          done
+
+          echo "Copying Key-Definitions files..."
+          if [ -d key-definitions ]; then
+            cp -r key-definitions/* site-content/key-definitions/ || true
+          else
+            echo "WARNING: key-definitions folder not found!"
           fi
-        done
-
-        echo "Copying Key-Definitions files..."
-        if [ -d key-definitions ]; then
-          cp -r key-definitions/* site-content/key-definitions/ || true
-        else
-          echo "WARNING: key-definitions folder not found!"
-        fi
 
       - name: Debug file tree
         run: ls -R site-content

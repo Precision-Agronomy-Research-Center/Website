@@ -1,42 +1,46 @@
-name: Sync Content and Deploy Pages
+name: Deploy GitHub Pages
 
 on:
   push:
     branches:
-      - main # Or your default branch, e.g., 'master'
-  workflow_dispatch:
+      - main # Adjust if your default branch is different
 
-# The workflow defines a single job to run on an Ubuntu environment.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
-  sync-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
-      # Step 1: Check out the main Pages repository.
-      # `fetch-depth: 0` is required by the deploy-pages action.
-      - name: Checkout Pages repo
+      - name: Checkout Website repo
+        uses: actions/checkout@v4
+
+      - name: Checkout Key-Definitions repo
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          repository: precision-agronomy-research-center/Key-Definitions
+          path: key-definitions
 
-      # Step 2: Check out the secondary content repository.
-      - name: Checkout secondary content repo
-        uses: actions/checkout@v4
-        with:
-          repository: 'https://github.com/Precision-Agronomy-Research-Center/Key_Definitions' # Replace with your secondary repo
-          path: 'Key_Definitions' # The folder where the content will be placed
-          #token: ${{ secrets.SOURCE_REPO_TOKEN }} # Needed only if the secondary repo is private
+      - name: Prepare site content
+        run: |
+          mkdir -p site-content
+          cp -r * site-content/
+          cp -r key-definitions/* site-content/key-definitions/
 
-      # Step 3: Set up the GitHub Pages environment.
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      # Step 4: Upload the entire directory as a Pages artifact.
-      - name: Upload artifact
+      - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.' # Publish the entire root directory
+          path: site-content
 
-      # Step 5: Deploy the artifact to GitHub Pages.
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

@@ -894,16 +894,17 @@ p.uppercase, .p.uppercase,
 
 .tabs {
   color: #fff;
-  max-width: 260px;
+  max-width: 100%;
   border-radius: 5px;
 }
 .tabs li {
-  padding: 16px 20px;
+  padding: 8px 20px;
   letter-spacing: 2.5px;
   font-size: 12px;
   transition: 0.15s;
   margin-top: -1px;
   border: 1px solid rgba(255, 255, 255, 0.3);
+  text-align: center;
 }
 .tabs li:not(:last-child) {
   border-bottom: 0;
@@ -4725,6 +4726,10 @@ html {
 
 body {
   font-size: 15px;
+}
+.smaller-text {
+  font-size: 0.5em; /* Relative to the h1's font size */
+  opacity: 1
 }
 
 .typography .h1, .typography h1,

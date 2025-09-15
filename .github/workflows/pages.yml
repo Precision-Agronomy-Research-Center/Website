@@ -23,7 +23,7 @@ jobs:
       - name: Checkout Key-Definitions repo (latest)
         uses: actions/checkout@v4
         with:
-          repository: precision-agronomy-research-center/Key-Definitions
+          repository: Precision-Agronomy-Research-Center/Key_Definitions
           ref: main
           path: key-definitions
 

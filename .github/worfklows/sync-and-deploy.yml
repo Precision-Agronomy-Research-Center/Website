@@ -1,0 +1,42 @@
+name: Sync Content and Deploy Pages
+
+on:
+  push:
+    branches:
+      - main # Or your default branch, e.g., 'master'
+  workflow_dispatch:
+
+# The workflow defines a single job to run on an Ubuntu environment.
+jobs:
+  sync-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Check out the main Pages repository.
+      # `fetch-depth: 0` is required by the deploy-pages action.
+      - name: Checkout Pages repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Step 2: Check out the secondary content repository.
+      - name: Checkout secondary content repo
+        uses: actions/checkout@v4
+        with:
+          repository: 'Precision-Agronomy-Research-Center/Key_Definitions' # Replace with your secondary repo
+          path: 'Key_Definitions' # The folder where the content will be placed
+          #token: ${{ secrets.SOURCE_REPO_TOKEN }} # Needed only if the secondary repo is private
+
+      # Step 3: Set up the GitHub Pages environment.
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      # Step 4: Upload the entire directory as a Pages artifact.
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.' # Publish the entire root directory
+
+      # Step 5: Deploy the artifact to GitHub Pages.
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

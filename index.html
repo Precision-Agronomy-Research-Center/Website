@@ -25,9 +25,39 @@
 	<!-- <script src="js/custom.js" type="text/javascript"></script> -->
 
 	<!-- Fonts and Material Icons -->
-	<link rel="stylesheet" as="font" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,600,700|Material+Icons"/>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  let refs = document.querySelectorAll('sup[data-footnote]');
+  refs.forEach(function(ref, i) {
+    let number = i + 1;
+    let key = ref.getAttribute('data-footnote');
+    // Create the link inside the sup
+    let a = document.createElement('a');
+    a.href = '#footnote-' + key;
+    a.textContent = '[' + number + ']';
+    a.style.textDecoration = 'none';
+    ref.appendChild(a);
+
+    // Show the textbox when the link is clicked
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      document.querySelectorAll('.footnote-box').forEach(function(box) {
+        box.style.display = 'none';
+      });
+      let box = document.getElementById('footnote-' + key);
+      if (box) box.style.display = 'block';
+      box.scrollIntoView({behavior: "smooth"});
+    });
+  });
+});
+</script>
+
+  <link rel="stylesheet" as="font" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,600,700|Material+Icons"/>
  
 </head>
+
+
 <body class="slides horizontal simplifiedMobile animated">
 		
 <!-- SVG Library -->
@@ -52,7 +82,7 @@
 </div>
 <div class="center">
   <ul class="menu">
-    <li><a href="index.html">Main</a></li>
+    <li><a href="index.html">Home</a></li>
     <li><a href="about.html">About</a></li>
     <li><a href="people.html">People</a></li>
     <li><a href="commons.html">Commons</a></li>
@@ -71,7 +101,6 @@
 
 
 
-
 <!-- Slide 5 (#91) -->
 <section class="slide fade-6 kenBurns">
   <div class="content">
@@ -83,41 +112,73 @@
             <h1 class="ae-2 huge fromAbove margin-bottom-2">The Precision Agronomy Research Center </h1>
             <p class="margin-bottom-2 ae-1">
               <span class="opacity-10" style="background: #C89800;">
-                <i>&ensp;Engineering community resiliency and self-sufficiency&ensp; 
-                  <br>&ensp;across vital domains&ensp;</i>
+                <i>&ensp;Curating <b>Appropriate Technology</b> Across Vital Domains&ensp; <br>
+                &ensp;For Robust and Sustainable <b>Farmsteads</b>&ensp;</i>
               </span>
-            </p>          
+            </p>
           </div>
-          <ul class="grid fixedSpaces left margin-top-10">
-            <li class="col-3-12 col-tablet-1-2 col-phablet-1-1 ae-4 fromLeft">
-              <h3>Agriculture</h3>
-              <p class="tiny opacity-6">We live in a society where everybody feels guilty.</p>
+
+
+        <ul class="grid fixedSpaces left margin-top-10">
+            <li class="col-3-12 col-tablet-1-2 col-phablet-1-1 ae-4 fromLeft done">
+            <h3><a href="https://example.com"><u>Key Definitions</u></a></h3>
+
+
+            <p class="tiny opacity-6">
+              <u><b>- Farmstead:</b></u><br> 
+              A managed ecosystem that supports* human life.<br>
+              <u><b>Appropriate Technology:</b></u><br> 
+              Practical, affordable tech suited to local needs and resources.<br>
+              <u><b>Vital Domains:</b></u><br> 
+              Eco (food, water, shelter, health, maintenance, etc.)<br>
+              <u><b>- Robust & Sustainable:</b></u><br> Designed to be resilient, long-lasting, and environmentally responsible for future generations.<br>
+              <div class = "tiny opacity-4" id = "independent">
+                <b>Independent:</b> By independent, we mean a system that can operate and sustain itself without external inputs.
+              </div>
+            </p>
+          </li>
+            <li class="col-3-12 col-tablet-1-2 col-phablet-1-1 ae-4 fromLeft done">
+              <h3>Taxonomy of <br> Vital Domains</h3>
+              <p class="tiny opacity-6">We are building a taxonomy of critical 
+                systems thatteads, and curating 
+                the software, hardware, and processes to implement them. 
+                Contribute to this effort 
+              </p>
             </li>
-            <li class="col-3-12 col-tablet-1-2 col-phablet-1-1 ae-5 fromLeft">
-              <h3>Energy Production</h3>
+            <li class="col-3-12 col-tablet-1-2 col-phablet-1-1 ae-5 fromLeft done">
+              <h3>Open <br> Accounting</h3>
               <p class="tiny opacity-6">You don’t have to be “a creative” to be creative.</p>
             </li>
-            <li class="col-3-12 col-tablet-1-2 col-phablet-1-1 ae-6 fromLeft">
-            <h3>Autonomous Systems</h3>
+            <li class="col-3-12 col-tablet-1-2 col-phablet-1-1 ae-6 fromLeft done">
+            <h3>Sister Orgs & <br> </h3>
              <p class="tiny opacity-6">There is no such thing as simple. Simple is hard.</p>
             </li>
-            <li class="col-3-12 col-tablet-1-2 col-phablet-1-1 ae-7 fromLeft">
-            <h3>Digital Infrastructure</h3>
-             <p class="tiny opacity-6">Design makes what was once impossible possible.</p>
-            </li>
-            <li class="col-3-12 col-tablet-1-2 col-phablet-1-1 ae-6 fromLeft">
-            <h3>Medical Care</h3>
-             <p class="tiny opacity-6">Design makes what was once impossible possible.</p>
-            </li>
-            <li class="col-3-12 col-tablet-1-2 col-phablet-1-1 ae-6 fromLeft">
-            <h3>Self-Directed Learning</h3> 
-            <p class="tiny opacity-6">Design makes what was once impossible possible.</p>
-            </li>
-            
-
+            <li class="col-3-12 col-tablet-1-2 col-phablet-1-1 ae-7 fromLeft done">
           </ul>
-        </div>
-                
+
+          <br>          
+          <!-- <hr class="hr_plain ae-2 fromAbove"> -->
+          <br>  
+          <ul class="tabs" id="main-tabs">
+            <li class="selected" id="agricultural-production-tab" data-show="agricultural-production-sub-tabs" >Agricultural Production</li>
+            <li id="tab-energy" data-show="energy-production-sub-tabs">Energy Production</li>
+            <li id="tab-autonomous">Autonomous Systems</li>
+            <li id="tab-digital">Digital Infrastructure</li>
+            <li id="tab-medical">Medical Care</sli>
+            <li id="tab-schooling">Schooling & Education</li>
+          </ul>
+              <ul class="tabs" id="agricultural-production-sub-tabs" style="display: flex;">
+                <li class="selected" id="soil-tab">Soil </li>
+                <li id="crop-management-tab">Crops</li>
+                <li id="livestock-management-tab">Livestock</li>
+                <li id="irrigation-tab">Irrigation</li>
+                <li id="pest-control-tab">Pest Control</li>
+              </ul>
+              <ul class="tabs" id="energy-production-sub-tabs" style="display: flex;">              
+                <li>Solar</li>
+                <li>Wind</li>
+              </ul>
+        </div>  
       </div>
     </div>
   </div>
@@ -126,3 +187,38 @@
 
 </body>
 </html>
+
+
+<script>
+document.querySelectorAll('#main-tabs li').forEach(function(tab) {
+  tab.addEventListener('click', function() {
+    // Remove selected from all main tabs
+    document.querySelectorAll('#main-tabs li').forEach(function(t) {
+      t.classList.remove('selected');
+    });
+    tab.classList.add('selected');
+
+    // Hide all dependent tab rows
+    document.querySelectorAll('.tabs[id$="-sub-tabs"]').forEach(function(row) {
+      row.style.display = 'none';
+    });
+
+    // Show the dependent tab row if specified
+    var showId = tab.getAttribute('data-show');
+    if (showId) {
+      var row = document.getElementById(showId);
+      if (row) row.style.display = 'flex';
+    }
+  });
+window.addEventListener('DOMContentLoaded', function() {
+  var selectedMain = document.querySelector('#main-tabs li.selected');
+  document.querySelectorAll('.tabs[id$="-sub-tabs"]').forEach(function(row) {
+    row.style.display = 'none';
+  });
+  if (selectedMain && selectedMain.dataset.show) {
+    var row = document.getElementById(selectedMain.dataset.show);
+    if (row) row.style.display = 'flex';
+  }
+});
+});
+</script>

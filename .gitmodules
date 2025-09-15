@@ -1,0 +1,3 @@
+[submodule "Key_Definitions"]
+	path = Key_Definitions
+	url = https://github.com/Precision-Agronomy-Research-Center/Key_Definitions/

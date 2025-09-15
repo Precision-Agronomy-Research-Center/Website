@@ -1,9 +1,12 @@
 name: Deploy GitHub Pages
 
 on:
+  repository_dispatch:
+    types: [update-from-key-definitions]
+  workflow_dispatch: # allow manual runs too
   push:
     branches:
-      - main # Adjust if your default branch is different
+      - main # still allow normal pushes to rebuild
 
 permissions:
   contents: read
@@ -17,10 +20,11 @@ jobs:
       - name: Checkout Website repo
         uses: actions/checkout@v4
 
-      - name: Checkout Key-Definitions repo
+      - name: Checkout Key-Definitions repo (latest)
         uses: actions/checkout@v4
         with:
           repository: precision-agronomy-research-center/Key-Definitions
+          ref: main
           path: key-definitions
 
       - name: Prepare site content
@@ -28,6 +32,9 @@ jobs:
           mkdir -p site-content
           cp -r * site-content/
           cp -r key-definitions/* site-content/key-definitions/
+
+      - name: Debug file tree
+        run: ls -R site-content
 
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3

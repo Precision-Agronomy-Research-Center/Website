@@ -22,7 +22,7 @@ jobs:
       - name: Checkout secondary content repo
         uses: actions/checkout@v4
         with:
-          repository: 'Precision-Agronomy-Research-Center/Key_Definitions' # Replace with your secondary repo
+          repository: 'https://github.com/Precision-Agronomy-Research-Center/Key_Definitions' # Replace with your secondary repo
           path: 'Key_Definitions' # The folder where the content will be placed
           #token: ${{ secrets.SOURCE_REPO_TOKEN }} # Needed only if the secondary repo is private
 

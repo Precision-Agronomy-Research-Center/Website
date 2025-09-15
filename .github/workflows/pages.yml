@@ -25,7 +25,7 @@ jobs:
         with:
           repository: Precision-Agronomy-Research-Center/Key_Definitions
           ref: main
-          path: key-definitions
+          path: Key_Definitions
 
       - name: Prepare site content
         run: |
@@ -34,17 +34,13 @@ jobs:
           echo "Copying Website repo files..."
           shopt -s dotglob nullglob
           for f in *; do
-            if [ "$f" != "site-content" ] && [ "$f" != "key-definitions" ]; then
+            if [ "$f" != "site-content" ] && [ "$f" != "Key_Definitions" ]; then
               cp -r "$f" site-content/
             fi
           done
 
           echo "Copying Key-Definitions files..."
-          if [ -d key-definitions ]; then
-            cp -r key-definitions/* site-content/key-definitions/ || true
-          else
-            echo "WARNING: key-definitions folder not found!"
-          fi
+          cp -r Key_Definitions/* site-content/key-definitions/ || true
 
       - name: Debug file tree
         run: ls -R site-content

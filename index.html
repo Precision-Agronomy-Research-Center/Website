@@ -135,7 +135,6 @@ function buildRecursiveTabs(items) {
       selectTab(li);
 
       // 2. Hide all other sibling containers (nested tabs or content)
-      // This is the key change: Find the parent container and only hide siblings.
       const parentContainer = li.closest('.tab-level-container');
       if (parentContainer) {
         parentContainer.querySelectorAll(':scope > .nested-tabs, :scope > .tab-content').forEach(element => {

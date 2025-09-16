@@ -893,16 +893,6 @@ p.uppercase, .p.uppercase,
 }
 
 .tabs {
-  color: #fff;
-  max-width: 100%;
-  border-radius: 5px;
-  display: flex;           /* Add this */
-  flex-direction: row;     /* Add this */
-  justify-content: flex-start; /* Optional: aligns tabs to the left */
-  align-items: stretch;    /* Optional: makes all tabs same height */
-
-}
-.tabs {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -912,6 +902,7 @@ p.uppercase, .p.uppercase,
   color: #fff;
   background: transparent;
   margin-bottom: 10px; /* Space between tab rows */
+  cursor: pointer
 }
 
 .tabs li {

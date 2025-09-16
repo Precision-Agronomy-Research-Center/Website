@@ -115,14 +115,14 @@ document.addEventListener('DOMContentLoaded', function() {
    */
   function buildTabHierarchy(flatData) {
     const tree = [];
-    const itemMap = new Map(); // To store references to all items for quick lookup
+    const itemMap = new Map();
 
     // First pass: Populate itemMap and identify top-level items
     flatData.forEach(item => {
-      const newItem = { ...item, children: [] }; // Clone and add children array
-      itemMap.set(newItem.id, newItem); // Store reference
+      const newItem = { ...item, children: [] };
+      itemMap.set(newItem.id, newItem);
       if (newItem.parent_id === null) {
-        tree.push(newItem); // Add top-level items to the root tree
+        tree.push(newItem);
       }
     });
 
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (item.parent_id !== null) {
         const parent = itemMap.get(item.parent_id);
         if (parent) {
-          parent.children.push(itemMap.get(item.id)); // Attach child to parent's children array
+          parent.children.push(itemMap.get(item.id));
         } else {
           console.warn(`Parent with id ${item.parent_id} not found for item ${item.id}.`);
         }
@@ -143,82 +143,80 @@ document.addEventListener('DOMContentLoaded', function() {
   // --- END Function ---
 
 
-  // ---- Load Vital Domains Tabs (Modified to only handle tab creation and switching) ----
-  fetch('/vital-domains/vital_domains.json') // Assuming this now returns the flat JSON structure
+  // ---- Recursive function to build tabs and content ----
+  function createTabsAndContent(items, container, contentContainer) {
+    const ul = document.createElement('ul');
+    ul.className = 'tabs';
+    container.appendChild(ul);
+
+    items.forEach((item, i) => {
+      // Create tab (li)
+      const li = document.createElement('li');
+      li.textContent = item.name;
+      li.dataset.tabId = item.id;
+      ul.appendChild(li);
+
+      // Create content panel for this tab
+      const contentPanel = document.createElement('div');
+      contentPanel.className = 'tab-content-panel';
+      contentPanel.dataset.contentId = item.id;
+      contentContainer.appendChild(contentPanel);
+
+      // If item has children, create nested tabs inside its content panel
+      if (item.children.length > 0) {
+        createTabsAndContent(item.children, contentPanel, contentPanel);
+      } else {
+        // If no children, populate with static content
+        const p = document.createElement('p');
+        p.textContent = `Content for ${item.name} goes here.`;
+        contentPanel.appendChild(p);
+      }
+
+      // Add click handler to tab
+      li.addEventListener('click', () => {
+        // De-select all tabs in the same level
+        Array.from(li.parentNode.children).forEach(sibling => sibling.classList.remove('selected'));
+        // Select the clicked tab
+        li.classList.add('selected');
+
+        // Hide all content panels in the same level
+        Array.from(contentPanel.parentNode.children).forEach(panel => panel.style.display = 'none');
+        // Show the content panel for the clicked tab
+        contentPanel.style.display = 'block';
+      });
+
+      // Select the first tab and show its content by default
+      if (i === 0) {
+        li.classList.add('selected');
+        contentPanel.style.display = 'block';
+      } else {
+        contentPanel.style.display = 'none';
+      }
+    });
+  }
+
+  // ---- Main script execution ----
+  fetch('/vital-domains/vital_domains.json')
     .then(r => r.json())
-    .then(flatDomainsData => { // Renamed parameter to reflect flat input
-      const hierarchicalDomains = buildTabHierarchy(flatDomainsData); // Interpret data
-      
-      const mainTabs = document.getElementById('main-tabs');
-      const subTabsContainer = document.getElementById('sub-tabs-container');
-      const tabContent = document.getElementById('tab-content'); // Keep reference if needed elsewhere
+    .then(flatDomainsData => {
+      const hierarchicalDomains = buildTabHierarchy(flatDomainsData);
 
-      mainTabs.innerHTML = '';
-      subTabsContainer.innerHTML = '';
-      tabContent.innerHTML = ''; // Clear any existing content or loading state
+      const mainTabsContainer = document.getElementById('main-tabs-container'); // Need to add this div to your HTML
+      const mainContentContainer = document.getElementById('main-content-container'); // Need to add this div to your HTML
 
-      // Build main tabs + sub-tabs dynamically from hierarchicalDomains
-      hierarchicalDomains.forEach((domainItem, i) => { // Iterate over top-level items
-        // Create main tab
-        const li = document.createElement('li');
-        li.textContent = domainItem.name; // Use 'name' from the object
-        li.dataset.show = `sub-tabs-${domainItem.id}`; // Use item ID for unique sub-tab container ID
-        if (i === 0) li.classList.add('selected'); // first main tab selected
-        mainTabs.appendChild(li);
+      mainTabsContainer.innerHTML = '';
+      mainContentContainer.innerHTML = '';
 
-        // Create sub-tabs row for this main tab
-        const subUl = document.createElement('ul');
-        subUl.className = 'tabs';
-        subUl.id = `sub-tabs-${domainItem.id}`; // Unique ID for sub-tab container
-        subUl.style.display = (i === 0) ? 'flex' : 'none'; // Show first main tab's sub-tabs
+      createTabsAndContent(hierarchicalDomains, mainTabsContainer, mainContentContainer);
 
-        domainItem.children.forEach((subItem, j) => { // Iterate over children for sub-tabs
-          const subLi = document.createElement('li');
-          if (j === 0) subLi.classList.add('selected');
-          subLi.textContent = subItem.name; // Use 'name' from the sub-item
-
-          // --- Sub-tab click handler (NO CONTENT RENDERING HERE) ---
-          subLi.addEventListener('click', function() {
-            // Unselect siblings
-            subUl.querySelectorAll('li').forEach(t => t.classList.remove('selected'));
-            subLi.classList.add('selected');
-
-          });
-
-          subUl.appendChild(subLi);
-        });
-
-        subTabsContainer.appendChild(subUl);
-      });
-
-      // Main tab switching (logic remains largely the same)
-      mainTabs.querySelectorAll('li').forEach(tab => {
-        tab.addEventListener('click', function() {
-          mainTabs.querySelectorAll('li').forEach(t => t.classList.remove('selected'));
-          tab.classList.add('selected');
-
-          subTabsContainer.querySelectorAll('ul').forEach(row => row.style.display = 'none');
-
-          const target = document.getElementById(tab.dataset.show);
-          if (target) {
-            target.style.display = 'flex';
-            // IMPORTANT: We still trigger a click on the first sub-tab to ensure its 'selected'
-            // state is applied and any specific sub-tab-related functionality (if added later) runs.
-            const firstSub = target.querySelector('li');
-            if (firstSub) firstSub.click(); 
-          }
-        });
-      });
     })
     .catch(err => {
       console.error("Vital domains load failed", err);
-      document.getElementById('main-tabs').innerHTML =
-        '<li><p style="color:red;">Failed to load domains.</p></li>';
     });
 
 });
-
 </script>
+
 
   <link rel="stylesheet" as="font" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,600,700|Material+Icons"/>
  
@@ -292,6 +290,9 @@ document.addEventListener('DOMContentLoaded', function() {
           <ul class="tabs" id="main-tabs"></ul>
           <div id="sub-tabs-container"></div>
           <div id="tab-content" class="tiny opacity-6 margin-top-2"></div>
+          <div id="main-tabs-container"></div>
+          <div id="main-content-container"></div>
+
 
         </div>  
       </div>

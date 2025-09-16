@@ -77,145 +77,122 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+// A helper function to manage the "selected" state for tabs in a single row
+function selectTab(tabElement) {
+  const tabRow = tabElement.parentElement;
+  tabRow.querySelectorAll('li').forEach(t => t.classList.remove('selected'));
+  tabElement.classList.add('selected');
+}
 
-  // ---- Load Key Definitions Grid (existing code, no change needed) ----
-  fetch('/key-definitions/definitions.json')
-    .then(r => r.json())
-    .then(definitions => {
-      const grid = document.getElementById('definitions-grid');
-      grid.innerHTML = '';
+// The recursive function to build tabs at any level
+function buildRecursiveTabs(items, containerElement) {
+  // Only proceed if there are items to display
+  if (!items || items.length === 0) {
+    return;
+  }
 
-      definitions.forEach((item, i) => {
-        const li = document.createElement('li');
-        li.className = `col-3-12 col-tablet-1-2 col-phablet-1-1 ae-${i+4} fromLeft done`;
-        li.innerHTML = `
-          <h3><u>${item.term}</u></h3>
-          <p class="tiny opacity-6">${item.definition}</p>
-        `;
-        grid.appendChild(li);
+  // Create the <ul> element for the current tab row
+  const ul = document.createElement('ul');
+  ul.className = 'tabs';
+
+  items.forEach((item, i) => {
+    // Create the <li> element for the current tab
+    const li = document.createElement('li');
+    li.textContent = item.name;
+
+    // A unique ID for the content linked to this tab
+    const contentId = `tab-content-${item.id}`;
+
+    // Add click handler for the tab
+    li.addEventListener('click', function() {
+      // 1. Update selected state for this tab row
+      selectTab(li);
+
+      // 2. Hide all other sub-tab rows at the same level
+      const parentSubTabsContainer = ul.parentElement;
+      parentSubTabsContainer.querySelectorAll('.tabs').forEach(row => {
+        if (row !== ul) {
+          row.style.display = 'none';
+        }
       });
-    })
-    .catch(err => {
-      console.error("Definitions load failed", err);
-      document.getElementById('definitions-grid').innerHTML =
-        '<li><p style="color:red;">Failed to load definitions.</p></li>';
-    });
 
-
-  // --- Function to build the hierarchy from flat data (unchanged) ---
-  /**
-   * Converts a flat array of objects with parent_id into a hierarchical tree structure.
-   * This is the robust interpretation logic.
-   *
-   * @param {Array<Object>} flatData - The flat array of objects, where each object
-   *   has an an 'id', 'name', and 'parent_id' property. 'parent_id' is null for top-level items.
-   * @returns {Array<Object>} A nested array representing the hierarchical structure.
-   */
-  function buildTabHierarchy(flatData) {
-    const tree = [];
-    const itemMap = new Map(); // To store references to all items for quick lookup
-
-    // First pass: Populate itemMap and identify top-level items
-    flatData.forEach(item => {
-      const newItem = { ...item, children: [] }; // Clone and add children array
-      itemMap.set(newItem.id, newItem); // Store reference
-      if (newItem.parent_id === null) {
-        tree.push(newItem); // Add top-level items to the root tree
+      // 3. Hide all nested sub-tab rows (deeper than the current level)
+      // This is crucial for a recursive system.
+      ul.querySelectorAll('.tabs').forEach(row => row.style.display = 'none');
+      
+      // 4. Show content (or next level of tabs) for the selected tab
+      const targetContent = document.getElementById(contentId);
+      if (targetContent) {
+        // If content exists, show it.
+        targetContent.style.display = 'flex';
       }
-    });
 
-    // Second pass: Link children to their parents
-    flatData.forEach(item => {
-      if (item.parent_id !== null) {
-        const parent = itemMap.get(item.parent_id);
-        if (parent) {
-          parent.children.push(itemMap.get(item.id)); // Attach child to parent's children array
-        } else {
-          console.warn(`Parent with id ${item.parent_id} not found for item ${item.id}.`);
+      // 5. If the current tab has children, show its sub-tab row
+      if (item.children && item.children.length > 0) {
+        const nextSubTabsId = `sub-tabs-${item.id}`;
+        const nextSubTabs = document.getElementById(nextSubTabsId);
+        if (nextSubTabs) {
+          nextSubTabs.style.display = 'flex';
+          
+          // Select the first sub-tab of the new row, if it exists
+          const firstSub = nextSubTabs.querySelector('li');
+          if (firstSub) {
+            selectTab(firstSub);
+          }
         }
       }
     });
 
-    return tree;
-  }
-  // --- END Function ---
-
-
-  // ---- Load Vital Domains Tabs (Modified to only handle tab creation and switching) ----
-  fetch('/vital-domains/vital_domains.json') // Assuming this now returns the flat JSON structure
-    .then(r => r.json())
-    .then(flatDomainsData => { // Renamed parameter to reflect flat input
-      const hierarchicalDomains = buildTabHierarchy(flatDomainsData); // Interpret data
+    // Recursively build children tabs and content
+    if (item.children && item.children.length > 0) {
+      const nextSubTabsContainer = document.createElement('div');
+      nextSubTabsContainer.id = `sub-tabs-${item.id}`;
+      nextSubTabsContainer.style.display = 'none';
       
-      const mainTabs = document.getElementById('main-tabs');
-      const subTabsContainer = document.getElementById('sub-tabs-container');
-      const tabContent = document.getElementById('tab-content'); // Keep reference if needed elsewhere
+      // Recursive call to build the next level of tabs
+      buildRecursiveTabs(item.children, nextSubTabsContainer);
 
-      mainTabs.innerHTML = '';
-      subTabsContainer.innerHTML = '';
-      tabContent.innerHTML = ''; // Clear any existing content or loading state
+      ul.appendChild(li);
+      containerElement.appendChild(ul);
+      containerElement.appendChild(nextSubTabsContainer);
+    } else {
+      // Create a content area for leaf-node tabs
+      const contentDiv = document.createElement('div');
+      contentDiv.id = contentId;
+      contentDiv.className = 'tab-content';
+      contentDiv.textContent = `Content for ${item.name}`;
+      contentDiv.style.display = 'none';
 
-      // Build main tabs + sub-tabs dynamically from hierarchicalDomains
-      hierarchicalDomains.forEach((domainItem, i) => { // Iterate over top-level items
-        // Create main tab
-        const li = document.createElement('li');
-        li.textContent = domainItem.name; // Use 'name' from the object
-        li.dataset.show = `sub-tabs-${domainItem.id}`; // Use item ID for unique sub-tab container ID
-        if (i === 0) li.classList.add('selected'); // first main tab selected
-        mainTabs.appendChild(li);
+      ul.appendChild(li);
+      containerElement.appendChild(ul);
+      containerElement.appendChild(contentDiv);
+    }
+  });
+}
 
-        // Create sub-tabs row for this main tab
-        const subUl = document.createElement('ul');
-        subUl.className = 'tabs';
-        subUl.id = `sub-tabs-${domainItem.id}`; // Unique ID for sub-tab container
-        subUl.style.display = (i === 0) ? 'flex' : 'none'; // Show first main tab's sub-tabs
+// Initial fetch and setup
+document.addEventListener('DOMContentLoaded', () => {
+  fetch('/vital-domains/vital_domains.json')
+    .then(r => r.json())
+    .then(hierarchicalDomains => {
+      const mainTabsContainer = document.getElementById('main-tabs');
+      const allTabsContainer = document.getElementById('all-tabs-container');
 
-        domainItem.children.forEach((subItem, j) => { // Iterate over children for sub-tabs
-          const subLi = document.createElement('li');
-          if (j === 0) subLi.classList.add('selected');
-          subLi.textContent = subItem.name; // Use 'name' from the sub-item
+      // Build the top-level (main) tabs
+      buildRecursiveTabs(hierarchicalDomains, allTabsContainer);
 
-          // --- Sub-tab click handler (NO CONTENT RENDERING HERE) ---
-          subLi.addEventListener('click', function() {
-            // Unselect siblings
-            subUl.querySelectorAll('li').forEach(t => t.classList.remove('selected'));
-            subLi.classList.add('selected');
-
-          });
-
-          subUl.appendChild(subLi);
-        });
-
-        subTabsContainer.appendChild(subUl);
-      });
-
-      // Main tab switching (logic remains largely the same)
-      mainTabs.querySelectorAll('li').forEach(tab => {
-        tab.addEventListener('click', function() {
-          mainTabs.querySelectorAll('li').forEach(t => t.classList.remove('selected'));
-          tab.classList.add('selected');
-
-          subTabsContainer.querySelectorAll('ul').forEach(row => row.style.display = 'none');
-
-          const target = document.getElementById(tab.dataset.show);
-          if (target) {
-            target.style.display = 'flex';
-            // IMPORTANT: We still trigger a click on the first sub-tab to ensure its 'selected'
-            // state is applied and any specific sub-tab-related functionality (if added later) runs.
-            const firstSub = target.querySelector('li');
-            if (firstSub) firstSub.click(); 
-          }
-        });
-      });
+      // Trigger a click on the first main tab to initialize the view
+      const firstTab = allTabsContainer.querySelector('.tabs > li');
+      if (firstTab) {
+        firstTab.click();
+      }
     })
     .catch(err => {
       console.error("Vital domains load failed", err);
-      document.getElementById('main-tabs').innerHTML =
-        '<li><p style="color:red;">Failed to load domains.</p></li>';
+      document.getElementById('main-tabs').innerHTML = '<li><p style="color:red;">Failed to load domains.</p></li>';
     });
-
 });
 
 </script>
@@ -288,10 +265,15 @@ document.addEventListener('DOMContentLoaded', function() {
           <br><!-- <hr class="hr_plain ae-2 fromAbove"> --><br>  
           <!-- DEFINITIONS-->
           <!-- <ul id="definitions-grid" class="grid fixedSpaces left margin-top-10"></ul> -->
-          <!-- VITAL DOMAINS-->
+          
+          
+          <!-- VITAL DOMAINS
           <ul class="tabs" id="main-tabs"></ul>
           <div id="sub-tabs-container"></div>
-          <div id="tab-content" class="tiny opacity-6 margin-top-2"></div>
+          <div id="tab-content" class="tiny opacity-6 margin-top-2"></div> -->
+          <div id="all-tabs-container">
+            <!-- The recursive tab structure will be built here -->
+          </div>
 
         </div>  
       </div>

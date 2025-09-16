@@ -2,7 +2,9 @@ name: Deploy GitHub Pages
 
 on:
   repository_dispatch:
-    types: [update-from-key-definitions]
+    types: 
+      - update-from-key-definitions
+      - update-from-vital-domains   
   workflow_dispatch: # allow manual runs too
   push:
     branches:
@@ -27,6 +29,13 @@ jobs:
           ref: main
           path: Key_Definitions
 
+      - name: Checkout Vital-Domains repo (latest)   # 👈 NEW
+        uses: actions/checkout@v4
+        with:
+          repository: Precision-Agronomy-Research-Center/Vital_Domains
+          ref: main
+          path: Vital_Domains
+
       - name: Prepare site content
         run: |
           mkdir -p site-content
@@ -34,7 +43,7 @@ jobs:
           echo "Copying Website repo files..."
           shopt -s dotglob nullglob
           for f in *; do
-            if [ "$f" != "site-content" ] && [ "$f" != "Key_Definitions" ]; then
+            if [ "$f" != "site-content" ] && [ "$f" != "Key_Definitions" ] && [ "$f" != "Vital_Domains" ]; then
               cp -r "$f" site-content/
             fi
           done
@@ -42,6 +51,10 @@ jobs:
           echo "Copying Key-Definitions files..."
           mkdir -p site-content/key-definitions
           cp -r Key_Definitions/* site-content/key-definitions/ || true
+
+          echo "Copying Vital-Domains files..."    # 👈 NEW
+          mkdir -p site-content/vital-domains
+          cp -r Vital_Domains/* site-content/vital-domains/ || true
 
       - name: Debug file tree
         run: ls -R site-content

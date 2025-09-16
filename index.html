@@ -77,6 +77,128 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+  // ---- Load Key Definitions Grid ----
+  fetch('/key-definitions/definitions.json')
+    .then(r => r.json())
+    .then(definitions => {
+      const grid = document.getElementById('definitions-grid');
+      grid.innerHTML = '';
+
+      definitions.forEach((item, i) => {
+        const li = document.createElement('li');
+        li.className = `col-3-12 col-tablet-1-2 col-phablet-1-1 ae-${i+4} fromLeft done`;
+        li.innerHTML = `
+          <h3><u>${item.term}</u></h3>
+          <p class="tiny opacity-6">${item.definition}</p>
+        `;
+        grid.appendChild(li);
+      });
+    })
+    .catch(err => {
+      console.error("Definitions load failed", err);
+      document.getElementById('definitions-grid').innerHTML =
+        '<li><p style="color:red;">Failed to load definitions.</p></li>';
+    });
+
+
+  // ---- Load Vital Domains Tabs ----
+  fetch('/vital-domains/vital_domains.json')
+    .then(r => r.json())
+    .then(domains => {
+      const mainTabs = document.getElementById('main-tabs');
+      const subTabsContainer = document.getElementById('sub-tabs-container');
+      const tabContent = document.getElementById('tab-content');
+
+      mainTabs.innerHTML = '';
+      subTabsContainer.innerHTML = '';
+      tabContent.innerHTML = '';
+
+      // Build main tabs + sub-tabs
+      Object.keys(domains).forEach((domain, i) => {
+        // Create main tab
+        const li = document.createElement('li');
+        li.textContent = domain;
+        li.dataset.show = `sub-tabs-${i}`;
+        if (i === 0) li.classList.add('selected'); // first tab selected
+        mainTabs.appendChild(li);
+
+        // Create sub-tabs row
+        const subUl = document.createElement('ul');
+        subUl.className = 'tabs';
+        subUl.id = `sub-tabs-${i}`;
+        subUl.style.display = (i === 0) ? 'flex' : 'none';
+
+        Object.keys(domains[domain]).forEach((sub, j) => {
+          const subLi = document.createElement('li');
+          if (j === 0) subLi.classList.add('selected');
+          subLi.textContent = sub;
+
+          // --- Sub-tab click loads its items into content box ---
+          subLi.addEventListener('click', function() {
+            // Unselect siblings
+            subUl.querySelectorAll('li').forEach(t => t.classList.remove('selected'));
+            subLi.classList.add('selected');
+
+            // Show items
+            const items = domains[domain][sub];
+            tabContent.innerHTML = `
+              <h4>${sub}</h4>
+              <ul class="tiny opacity-6">
+                ${items.map(it => `<li>${it}</li>`).join('')}
+              </ul>
+            `;
+          });
+
+          // Default load for first sub-tab
+          if (i === 0 && j === 0) {
+            const items = domains[domain][sub];
+            tabContent.innerHTML = `
+              <h4>${sub}</h4>
+              <ul class="tiny opacity-6">
+                ${items.map(it => `<li>${it}</li>`).join('')}
+              </ul>
+            `;
+          }
+
+          subUl.appendChild(subLi);
+        });
+
+        subTabsContainer.appendChild(subUl);
+      });
+
+      // Main tab switching
+      mainTabs.querySelectorAll('li').forEach(tab => {
+        tab.addEventListener('click', function() {
+          // Unselect all main tabs
+          mainTabs.querySelectorAll('li').forEach(t => t.classList.remove('selected'));
+          tab.classList.add('selected');
+
+          // Hide all sub-tabs
+          subTabsContainer.querySelectorAll('ul').forEach(row => row.style.display = 'none');
+
+          // Show chosen row
+          const target = document.getElementById(tab.dataset.show);
+          if (target) {
+            target.style.display = 'flex';
+            // Trigger click on its first sub-tab
+            const firstSub = target.querySelector('li');
+            if (firstSub) firstSub.click();
+          }
+        });
+      });
+    })
+    .catch(err => {
+      console.error("Vital domains load failed", err);
+      document.getElementById('main-tabs').innerHTML =
+        '<li><p style="color:red;">Failed to load domains.</p></li>';
+    });
+
+});
+</script>
+
 
 
   <link rel="stylesheet" as="font" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,600,700|Material+Icons"/>
@@ -112,9 +234,6 @@ document.addEventListener('DOMContentLoaded', function() {
     <li><a href="about.html">About</a></li>
     <li><a href="people.html">People</a></li>
     <li><a href="commons.html">Commons</a></li>
-    <!-- <li><a href="visit.html">Visit PARC</a></li>
-    <li><a href="contribute.html">Contribute</a></li>
-    <li><a href="collaborate.html">Collaborate</a></li> -->
     <li><a href="resources.html">Help</a></li> 
   </ul>
 </div>
@@ -124,9 +243,6 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="right"><span class="button actionButton sidebarTrigger" data-sidebar-id="1"><svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#menu"></use></svg></span</div>
   </div>
 </nav>
-
-
-
 
 
 <!-- Slide 5 (#91) -->
@@ -152,25 +268,15 @@ document.addEventListener('DOMContentLoaded', function() {
           <br>          
           <!-- <hr class="hr_plain ae-2 fromAbove"> -->
           <br>  
-          <ul class="tabs" id="main-tabs">
-            <li class="selected" id="agricultural-production-tab" data-show="agricultural-production-sub-tabs" >Agricultural Production</li>
-            <li id="tab-energy" data-show="energy-production-sub-tabs">Energy Production</li>
-            <li id="tab-autonomous">Autonomous Systems</li>
-            <li id="tab-digital">Digital Infrastructure</li>
-            <li id="tab-medical">Medical Care</sli>
-            <li id="tab-schooling">Schooling & Education</li>
-          </ul>
-              <ul class="tabs" id="agricultural-production-sub-tabs" style="display: flex;">
-                <li class="selected" id="soil-tab">Soil </li>
-                <li id="crop-management-tab">Crops</li>
-                <li id="livestock-management-tab">Livestock</li>
-                <li id="irrigation-tab">Irrigation</li>
-                <li id="pest-control-tab">Pest Control</li>
-              </ul>
-              <ul class="tabs" id="energy-production-sub-tabs" style="display: flex;">              
-                <li>Solar</li>
-                <li>Wind</li>
-              </ul>
+        
+        <ul id="definitions-grid" class="grid fixedSpaces left margin-top-10"></ul>
+
+        <ul class="tabs" id="main-tabs"></ul>
+        <div id="sub-tabs-container"></div>
+
+        <!-- Content box for selected sub-tab -->
+        <div id="tab-content" class="tiny opacity-6 margin-top-2"></div>
+
         </div>  
       </div>
     </div>

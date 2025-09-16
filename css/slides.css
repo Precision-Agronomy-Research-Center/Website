@@ -155,7 +155,7 @@ h1, .h1 {
   letter-spacing: -0.036em;
 }
 h1.big, .h1.big {
-  font-size: 58px;
+  font-size: 30px;
   line-height: 1;
   font-weight: 100;
 }
@@ -166,6 +166,7 @@ h1.huge, .h1.huge {
   margin-bottom: 40px;
   font-weight: 100;
 }
+
 h1.small, .h1.small {
   font-size: 46px;
 }
@@ -1386,6 +1387,7 @@ p.uppercase, .p.uppercase,
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: left;
 }
 
 .container {

@@ -183,13 +183,8 @@ document.addEventListener('DOMContentLoaded', function() {
             subUl.querySelectorAll('li').forEach(t => t.classList.remove('selected'));
             subLi.classList.add('selected');
 
-            // IMPORTANT: If you *do* want to load specific content later based on the selected sub-tab,
-            // this is where you would trigger that logic (e.g., another fetch call,
-            // or showing/hiding pre-existing content sections based on subItem.id).
-            // For now, no content is dynamically loaded or inferred here.
           });
 
-          // No default content load for the first sub-tab anymore, as requested.
           subUl.appendChild(subLi);
         });
 
@@ -222,7 +217,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 });
-
 
 </script>
 

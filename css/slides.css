@@ -913,7 +913,7 @@ p.uppercase, .p.uppercase,
   display: flex;
   padding: 8px 20px;
   letter-spacing: 2.5px;
-  font-size: 12px;
+  font-size: 18px;
   transition: 0.15s;
   margin-top: -1px;
   border: 1px solid rgba(255, 255, 255, 0.3);

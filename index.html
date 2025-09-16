@@ -79,65 +79,58 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <script>
-// A helper function to manage the "selected" state for tabs in a single row
+/**
+ * A helper function to manage the "selected" state for tabs in a single row.
+ * @param {HTMLElement} tabElement - The <li> element to be selected.
+ */
 function selectTab(tabElement) {
   const tabRow = tabElement.parentElement;
   tabRow.querySelectorAll('li').forEach(t => t.classList.remove('selected'));
   tabElement.classList.add('selected');
 }
 
-// The recursive function to build tabs at any level
-function buildRecursiveTabs(items, containerElement) {
-  // Only proceed if there are items to display
+/**
+ * Recursively builds a nested tab structure.
+ * @param {Array<Object>} items - The data items for the current level of tabs.
+ * @returns {HTMLElement} A div element containing the nested tab structure.
+ */
+function buildRecursiveTabs(items) {
+  // Create a container for the current tab row and its children's rows.
+  const container = document.createElement('div');
   if (!items || items.length === 0) {
-    return;
+    return container; // Return an empty container if no items exist.
   }
 
-  // Create the <ul> element for the current tab row
+  // Create the <ul> element for the current tab row.
   const ul = document.createElement('ul');
   ul.className = 'tabs';
 
-  items.forEach((item, i) => {
-    // Create the <li> element for the current tab
+  items.forEach(item => {
+    // Create the <li> element for the current tab.
     const li = document.createElement('li');
     li.textContent = item.name;
 
-    // A unique ID for the content linked to this tab
-    const contentId = `tab-content-${item.id}`;
-
-    // Add click handler for the tab
     li.addEventListener('click', function() {
-      // 1. Update selected state for this tab row
+      // 1. Update the selected state for this tab row.
       selectTab(li);
 
-      // 2. Hide all other sub-tab rows at the same level
-      const parentSubTabsContainer = ul.parentElement;
-      parentSubTabsContainer.querySelectorAll('.tabs').forEach(row => {
-        if (row !== ul) {
-          row.style.display = 'none';
-        }
-      });
-
-      // 3. Hide all nested sub-tab rows (deeper than the current level)
-      // This is crucial for a recursive system.
-      ul.querySelectorAll('.tabs').forEach(row => row.style.display = 'none');
-      
-      // 4. Show content (or next level of tabs) for the selected tab
-      const targetContent = document.getElementById(contentId);
-      if (targetContent) {
-        // If content exists, show it.
-        targetContent.style.display = 'flex';
+      // 2. Hide all other sibling sub-tab rows at the same level.
+      const parentContainer = container.parentElement;
+      if (parentContainer) {
+        parentContainer.querySelectorAll('.nested-tabs').forEach(nestedContainer => {
+          nestedContainer.style.display = 'none';
+        });
       }
 
-      // 5. If the current tab has children, show its sub-tab row
+      // 3. Show the correct nested tab rows for the selected tab.
       if (item.children && item.children.length > 0) {
-        const nextSubTabsId = `sub-tabs-${item.id}`;
-        const nextSubTabs = document.getElementById(nextSubTabsId);
-        if (nextSubTabs) {
-          nextSubTabs.style.display = 'flex';
-          
-          // Select the first sub-tab of the new row, if it exists
-          const firstSub = nextSubTabs.querySelector('li');
+        // Find the next level of tabs based on this item's ID.
+        const nextSubTabsContainer = container.querySelector(`.nested-tabs[data-parent-id="${item.id}"]`);
+        if (nextSubTabsContainer) {
+          nextSubTabsContainer.style.display = 'block';
+
+          // Select the first child tab in the new row.
+          const firstSub = nextSubTabsContainer.querySelector('li');
           if (firstSub) {
             selectTab(firstSub);
           }
@@ -145,31 +138,27 @@ function buildRecursiveTabs(items, containerElement) {
       }
     });
 
-    // Recursively build children tabs and content
+    ul.appendChild(li);
+  });
+  container.appendChild(ul);
+
+  // Recursively build children tabs and content.
+  items.forEach(item => {
     if (item.children && item.children.length > 0) {
-      const nextSubTabsContainer = document.createElement('div');
-      nextSubTabsContainer.id = `sub-tabs-${item.id}`;
-      nextSubTabsContainer.style.display = 'none';
-      
-      // Recursive call to build the next level of tabs
-      buildRecursiveTabs(item.children, nextSubTabsContainer);
+      // Create a container for the next level of tabs.
+      const nestedContainer = document.createElement('div');
+      nestedContainer.className = 'nested-tabs';
+      nestedContainer.dataset.parentId = item.id;
+      nestedContainer.style.display = 'none'; // Initially hide.
 
-      ul.appendChild(li);
-      containerElement.appendChild(ul);
-      containerElement.appendChild(nextSubTabsContainer);
-    } else {
-      // Create a content area for leaf-node tabs
-      const contentDiv = document.createElement('div');
-      contentDiv.id = contentId;
-      contentDiv.className = 'tab-content';
-      contentDiv.textContent = `Content for ${item.name}`;
-      contentDiv.style.display = 'none';
-
-      ul.appendChild(li);
-      containerElement.appendChild(ul);
-      containerElement.appendChild(contentDiv);
+      // Recursive call to build the next level of tabs.
+      const childrenTabs = buildRecursiveTabs(item.children);
+      nestedContainer.appendChild(childrenTabs);
+      container.appendChild(nestedContainer);
     }
   });
+
+  return container;
 }
 
 // Initial fetch and setup
@@ -177,13 +166,14 @@ document.addEventListener('DOMContentLoaded', () => {
   fetch('/vital-domains/vital_domains.json')
     .then(r => r.json())
     .then(hierarchicalDomains => {
-      const mainTabsContainer = document.getElementById('main-tabs');
       const allTabsContainer = document.getElementById('all-tabs-container');
+      allTabsContainer.innerHTML = ''; // Clear existing content.
 
-      // Build the top-level (main) tabs
-      buildRecursiveTabs(hierarchicalDomains, allTabsContainer);
+      // Build the entire recursive tab structure.
+      const tabsHtml = buildRecursiveTabs(hierarchicalDomains);
+      allTabsContainer.appendChild(tabsHtml);
 
-      // Trigger a click on the first main tab to initialize the view
+      // Trigger a click on the first main tab to initialize the view.
       const firstTab = allTabsContainer.querySelector('.tabs > li');
       if (firstTab) {
         firstTab.click();
@@ -191,9 +181,13 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .catch(err => {
       console.error("Vital domains load failed", err);
-      document.getElementById('main-tabs').innerHTML = '<li><p style="color:red;">Failed to load domains.</p></li>';
+      const allTabsContainer = document.getElementById('all-tabs-container');
+      if (allTabsContainer) {
+        allTabsContainer.innerHTML = '<p style="color:red;">Failed to load domains.</p>';
+      }
     });
 });
+
 
 </script>
 

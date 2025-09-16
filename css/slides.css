@@ -168,8 +168,11 @@ h1.huge, .h1.huge {
 }
 
 h1.small, .h1.small {
-  font-size: 46px;
+  font-size: 20px;
+  line-height: 1;
+  font-weight: 100;
 }
+
 h1.micro, .h1.micro {
   font-size: 34px;
 }

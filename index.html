@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 
-  // --- NEW: Function to build the hierarchy from flat data ---
+  // --- Function to build the hierarchy from flat data (unchanged) ---
   /**
    * Converts a flat array of objects with parent_id into a hierarchical tree structure.
    * This is the robust interpretation logic.
@@ -140,10 +140,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     return tree;
   }
-  // --- END NEW FUNCTION ---
+  // --- END Function ---
 
 
-  // ---- Load Vital Domains Tabs (Modified to use hierarchical data) ----
+  // ---- Load Vital Domains Tabs (Modified to only handle tab creation and switching) ----
   fetch('/vital-domains/vital_domains.json') // Assuming this now returns the flat JSON structure
     .then(r => r.json())
     .then(flatDomainsData => { // Renamed parameter to reflect flat input
@@ -151,11 +151,11 @@ document.addEventListener('DOMContentLoaded', function() {
       
       const mainTabs = document.getElementById('main-tabs');
       const subTabsContainer = document.getElementById('sub-tabs-container');
-      const tabContent = document.getElementById('tab-content');
+      const tabContent = document.getElementById('tab-content'); // Keep reference if needed elsewhere
 
       mainTabs.innerHTML = '';
       subTabsContainer.innerHTML = '';
-      tabContent.innerHTML = '';
+      tabContent.innerHTML = ''; // Clear any existing content or loading state
 
       // Build main tabs + sub-tabs dynamically from hierarchicalDomains
       hierarchicalDomains.forEach((domainItem, i) => { // Iterate over top-level items
@@ -177,36 +177,19 @@ document.addEventListener('DOMContentLoaded', function() {
           if (j === 0) subLi.classList.add('selected');
           subLi.textContent = subItem.name; // Use 'name' from the sub-item
 
-          // --- Sub-tab click loads its items into content box ---
+          // --- Sub-tab click handler (NO CONTENT RENDERING HERE) ---
           subLi.addEventListener('click', function() {
             // Unselect siblings
             subUl.querySelectorAll('li').forEach(t => t.classList.remove('selected'));
             subLi.classList.add('selected');
 
-            // Show content (assuming subItem.content might hold a property with the array of items)
-            // You'll need to adapt this part based on how your 'Final Item 1' etc. content is structured
-            // For now, I'm assuming 'subItem.content' directly holds the array of list items.
-            // If it's a simple name as in our JSON example, you might need a different lookup.
-            const items = subItem.content || [`Content for ${subItem.name}`]; // Fallback if no content property
-            tabContent.innerHTML = `
-              <h4>${subItem.name}</h4>
-              <ul class="tiny opacity-6">
-                ${items.map(it => `<li>${it}</li>`).join('')}
-              </ul>
-            `;
+            // IMPORTANT: If you *do* want to load specific content later based on the selected sub-tab,
+            // this is where you would trigger that logic (e.g., another fetch call,
+            // or showing/hiding pre-existing content sections based on subItem.id).
+            // For now, no content is dynamically loaded or inferred here.
           });
 
-          // Default load for first sub-tab of the first main tab
-          if (i === 0 && j === 0) {
-            const items = subItem.content || [`Content for ${subItem.name}`];
-            tabContent.innerHTML = `
-              <h4>${subItem.name}</h4>
-              <ul class="tiny opacity-6">
-                ${items.map(it => `<li>${it}</li>`).join('')}
-              </ul>
-            `;
-          }
-
+          // No default content load for the first sub-tab anymore, as requested.
           subUl.appendChild(subLi);
         });
 
@@ -224,8 +207,10 @@ document.addEventListener('DOMContentLoaded', function() {
           const target = document.getElementById(tab.dataset.show);
           if (target) {
             target.style.display = 'flex';
+            // IMPORTANT: We still trigger a click on the first sub-tab to ensure its 'selected'
+            // state is applied and any specific sub-tab-related functionality (if added later) runs.
             const firstSub = target.querySelector('li');
-            if (firstSub) firstSub.click(); // Trigger click on its first sub-tab to load content
+            if (firstSub) firstSub.click(); 
           }
         });
       });
@@ -237,6 +222,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 });
+
 
 </script>
 

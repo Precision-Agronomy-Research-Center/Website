@@ -83,15 +83,16 @@ document.addEventListener('DOMContentLoaded', function() {
   fetch('/vital-domains/vital_domains.json')
     .then(r => r.json())
     .then(data => {
-      const mainTabsContainer = document.getElementById('main-tabs');
-      const tabsWrapper = document.createElement('div');
-      tabsWrapper.id = 'tabs-wrapper'; // A new wrapper for all tab levels
+      const tabsWrapper = document.getElementById('sub-tabs-container');
       const tabContent = document.getElementById('tab-content');
-      
-      mainTabsContainer.parentNode.insertBefore(tabsWrapper, mainTabsContainer.nextSibling);
 
       // Recursive function to build tabs at any level
       function createTabsFromData(parentTabsEl, parentData) {
+        // Clear any previous nested tabs at this level
+        while (parentTabsEl.firstChild) {
+            parentTabsEl.firstChild.remove();
+        }
+
         const tabsUl = document.createElement('ul');
         tabsUl.className = 'tabs';
         parentTabsEl.appendChild(tabsUl);
@@ -108,9 +109,11 @@ document.addEventListener('DOMContentLoaded', function() {
             tabsUl.querySelectorAll('li').forEach(t => t.classList.remove('selected'));
             li.classList.add('selected');
 
-            // Clear all tabs and content from deeper levels
-            while (tabsUl.nextSibling && tabsUl.nextSibling.id !== 'tab-content') {
-              tabsUl.nextSibling.remove();
+            // Find the next tabs container or the main content area
+            let nextContainer = parentTabsEl.nextElementSibling;
+            while (nextContainer && nextContainer.id !== 'tab-content') {
+                nextContainer.remove();
+                nextContainer = parentTabsEl.nextElementSibling;
             }
             tabContent.innerHTML = '';
 
@@ -124,17 +127,21 @@ document.addEventListener('DOMContentLoaded', function() {
               `;
             } else if (typeof childData === 'object' && childData !== null) {
               // Recursive step: Create new tabs for the next level
-              createTabsFromData(tabsWrapper, childData);
+              const newTabsContainer = document.createElement('div');
+              newTabsContainer.className = 'sub-tabs-level'; // Add a class for styling
+              parentTabsEl.parentNode.insertBefore(newTabsContainer, tabContent);
+              createTabsFromData(newTabsContainer, childData);
+              
               // Trigger a click on the first nested tab
-              const firstNestedTab = tabsWrapper.lastChild.querySelector('li');
+              const firstNestedTab = newTabsContainer.querySelector('li');
               if (firstNestedTab) {
                 firstNestedTab.click();
               }
             }
           });
 
-          // Automatically select the first tab and populate content on load
-          if (i === 0 && parentTabsEl === tabsWrapper) {
+          // Handle initial state for the first tab
+          if (i === 0) {
             li.classList.add('selected');
             if (Array.isArray(childData)) {
               tabContent.innerHTML = `
@@ -144,8 +151,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 </ul>
               `;
             } else if (typeof childData === 'object' && childData !== null) {
-              createTabsFromData(tabsWrapper, childData);
-              const firstNestedTab = tabsWrapper.lastChild.querySelector('li');
+              const newTabsContainer = document.createElement('div');
+              newTabsContainer.className = 'sub-tabs-level';
+              parentTabsEl.parentNode.insertBefore(newTabsContainer, tabContent);
+              createTabsFromData(newTabsContainer, childData);
+              const firstNestedTab = newTabsContainer.querySelector('li');
               if (firstNestedTab) {
                 firstNestedTab.click();
               }
@@ -154,15 +164,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
       }
 
-      // Start the recursion with the top-level data
+      // Initial call to start building the tabs from the top-level data
       createTabsFromData(tabsWrapper, data);
     })
     .catch(err => {
       console.error("Vital domains load failed", err);
-      document.getElementById('main-tabs').innerHTML =
-        '<li><p style="color:red;">Failed to load domains.</p></li>';
+      // Fallback for UI if JSON fetch fails
     });
 });
+
 
 </script>
 

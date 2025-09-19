@@ -195,7 +195,37 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+document.querySelectorAll('#main-tabs li').forEach(function(tab) {
+  tab.addEventListener('click', function() {
+    // Remove selected from all main tabs
+    document.querySelectorAll('#main-tabs li').forEach(function(t) {
+      t.classList.remove('selected');
+    });
+    tab.classList.add('selected');
 
+    // Hide all dependent tab rows
+    document.querySelectorAll('.tabs[id$="-sub-tabs"]').forEach(function(row) {
+      row.style.display = 'none';
+    });
+
+    // Show the dependent tab row if specified
+    var showId = tab.getAttribute('data-show');
+    if (showId) {
+      var row = document.getElementById(showId);
+      if (row) row.style.display = 'flex';
+    }
+  });
+window.addEventListener('DOMContentLoaded', function() {
+  var selectedMain = document.querySelector('#main-tabs li.selected');
+  document.querySelectorAll('.tabs[id$="-sub-tabs"]').forEach(function(row) {
+    row.style.display = 'none';
+  });
+  if (selectedMain && selectedMain.dataset.show) {
+    var row = document.getElementById(selectedMain.dataset.show);
+    if (row) row.style.display = 'flex';
+  }
+});
+});
 
 </script>
 
@@ -211,7 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
   
 <symbol id="logo" viewBox="0 0 1250 1025">
-  <rect x="-1000" y="200" width="1050" height="387" fill="#C89800"/>
+  <rect x="-1000" y="200" width="1050" height="387" fill="#896900"/>
   <text x="-900" y="500" fill="#FFFFFF" font-family="Baskerville Old Face, Baskerville, serif" font-weight="700" font-size="330">PARC</text>
 </symbol>
 
@@ -251,32 +281,61 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="wrap">
       
         <div class="fix-12-12 toCenter">
-          <div class="fix-7-12">
+          <div class="fix-8-12">
             <h1 class="ae-2 huge fromAbove margin-bottom-2">The Precision Agronomy Research Center </h1>
-            <p class="margin-bottom-2 ae-1">
-              <span class="opacity-10" style="background: #C89800;">
-                &thinsp;Curating&thinsp;<b>Appropriate&thinsp;Technology</b>&thinsp;Across&thinsp;<i>Vital
-                  &thinsp;Domains</i>&thinsp;For&thinsp; Robust&thinsp;and&thinsp;Sustainable&thinsp;<b>Farmsteads</b>&thinsp;
+            <!-- <div class="container"> -->
+              <!-- <div class="textbox"> -->
+                <p class="margin-bottom-2 ae-1">
+              <span class="opacity-10" style="background: #896900;">
+                &thinsp;Data-Driven Agriculture&thinsp;
               </span>
             </p>
+              <!-- </div> -->
+            <!-- </div> -->
           </div>
+        </div>
+<div class="container">
+    <div class="mainbox" id="resources">
+      <!-- Wrap the content with an anchor tag -->
+      <a href="#resources">
+        <h1 class="big">Free and Open Resources</h1>
+      </a>
+    </div>
+    <div class="mainbox" id="research">
+      <!-- Wrap the content with an anchor tag -->
+      <a href="#research">
+        <h1 class="big">Research & Opportunities</h1>
+      </a>
+    </div>
+    <div class="mainbox" id="education">
 
-          <!-- KEY DEFINITIONS-->
+      <a href="#education">
+        <h1 class="big">Education Center</h1>
+      </a>
+    </div>
+  </div>
+
+<div id = "resources">
+
+</div>
+
+<!--
+          <!-- KEY DEFINITIONS
           <div id="definitions-wrapper">
             <h1 class="ae-2 big fromAbove margin-bottom-2">Key Definitions</h1>
             <ul id="definitions-grid" class="grid fixedSpaces left margin-top-10"> </ul>
-          </div>
-
+          </div> -->
+<!--
           <!-- BREAK-->
           <br><!-- <hr class="hr_plain ae-2 fromAbove"> --><br>           
           
-          <!-- VITAL DOMAINS-->
+          <!-- VITAL DOMAINS--
           <div id="definitions-wrapper">
             <h1 class="ae-2 big fromAbove margin-bottom-2">Vital Domains</h1>
               <p><i>Select options - see results at the bottom</i></p>
             <div id="all-tabs-container"> </div>
           </div>
-
+-->
         </div>  
       </div>
     </div>
@@ -284,40 +343,8 @@ document.addEventListener('DOMContentLoaded', () => {
   <div class="background" style="background-image:url(assets/img/background/PARC_wide.jpg)"></div>
 </section>
 
+
 </body>
 </html>
 
 
-<script>
-document.querySelectorAll('#main-tabs li').forEach(function(tab) {
-  tab.addEventListener('click', function() {
-    // Remove selected from all main tabs
-    document.querySelectorAll('#main-tabs li').forEach(function(t) {
-      t.classList.remove('selected');
-    });
-    tab.classList.add('selected');
-
-    // Hide all dependent tab rows
-    document.querySelectorAll('.tabs[id$="-sub-tabs"]').forEach(function(row) {
-      row.style.display = 'none';
-    });
-
-    // Show the dependent tab row if specified
-    var showId = tab.getAttribute('data-show');
-    if (showId) {
-      var row = document.getElementById(showId);
-      if (row) row.style.display = 'flex';
-    }
-  });
-window.addEventListener('DOMContentLoaded', function() {
-  var selectedMain = document.querySelector('#main-tabs li.selected');
-  document.querySelectorAll('.tabs[id$="-sub-tabs"]').forEach(function(row) {
-    row.style.display = 'none';
-  });
-  if (selectedMain && selectedMain.dataset.show) {
-    var row = document.getElementById(selectedMain.dataset.show);
-    if (row) row.style.display = 'flex';
-  }
-});
-});
-</script>

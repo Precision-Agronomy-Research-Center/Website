@@ -1415,9 +1415,8 @@
     border-radius: 8px;
     text-align: center;
     overflow: hidden; /* Hide the content that is initially outside the box */
-    transition: max-height 0.5s ease-in-out; /* Smooth transition for the vertical expansion */
-    max-height: 100px; /* Initial height, adjust based on content */
-    
+    transition: max-height 0.5s ease-in-out; /* Smooth transition for the vertical expansion */  
+    max-height: 20vh; /* Initial height, adjust based on content */
   }
 
   /* Hover effect */
@@ -1426,6 +1425,8 @@
     background-color: #896900;
     opacity: 1;
   }
+
+
 
   /* Hidden content within the box */
   .expandable-text {

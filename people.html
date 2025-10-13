@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PARC People</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700|Material+Icons" rel="stylesheet">
+  <link href="css/slides.css" rel="stylesheet" />
+  <style>
+    /* ===== PEOPLE GRID ===== */
+    .people-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+      padding: 1rem;
+    }
+
+    .person-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      text-align: center;
+      padding: 1.5rem;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    .person-card:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-4px);
+    }
+
+    .person-card img {
+      width: 160px;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #896900;
+      margin-bottom: 1rem;
+    }
+
+    .person-name {
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: #f0c040;
+      margin-bottom: 0.4rem;
+    }
+
+    .person-title {
+      font-size: 1rem;
+      font-weight: 300;
+      color: #ccc;
+      margin-bottom: 0.8rem;
+    }
+
+    .person-desc {
+      font-size: 0.95rem;
+      color: #ddd;
+      line-height: 1.5;
+      text-align: left;
+    }
+
+    @media (max-width: 600px) {
+      .person-card img {
+        width: 120px;
+        height: 120px;
+      }
+      .person-desc {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+
+<body class="slides horizontal simplifiedMobile animated resources-page">
+  <!-- ===== SVG LOGO ===== -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+    <symbol id="logo" viewBox="0 0 400 120" preserveAspectRatio="xMidYMid meet">
+      <rect x="0" y="20" width="200" height="70" fill="#896900" rx="4" />
+      <text x="20" y="75" fill="#fff" font-family="Baskerville, 'Baskerville Old Face', serif" font-weight="700" font-size="48">
+        P A R C
+      </text>
+    </symbol>
+  </svg>
+
+  <!-- ===== HEADER ===== -->
+  <header class="banner">
+    <div class="banner-inner">
+      <a href="https://parccommons.org" class="logo-link">
+        <svg class="banner-logo"><use xlink:href="#logo"></use></svg>
+      </a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="people.html">People</a>
+        <a href="resources.html">Research</a>
+        <a href="project_pending.html">Collaborate</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="slide fade-6 kenBurns">
+    <div class="background" style="background-image:url('assets/img/background/PARC_wide.jpg')"></div>
+
+    <div class="content">
+      <!-- ===== TITLE ===== -->
+      <div class="container two-column">
+        <div class="half left">
+          <h1 class="ae-2 huge fromAbove margin-bottom-2" style="font-size: 3vw;">
+            PARC People
+          </h1>
+        </div>
+
+        <div class="half right">
+        </div>
+      </div>
+
+      <!-- ===== PEOPLE GRID ===== -->
+      <div class="container people-grid">
+
+        <!-- === PERSON 1 === -->
+        <div class="person-card">
+          <img src="assets/img/headshots/avinash.jpg" alt="Avinash Baskaran">
+          <div class="person-name">Dr. Avinash Baskaran</div>
+          <div class="person-title">Director, Precision Agronomy Research Center</div>
+          <div class="person-desc">
+            Avinash leads PARC's interdisciplinary initiatives in open-source technology, precision agronomy, and rural development. 
+            His research integrates systems, mechanical, and bio-engineering, and cyber-physical infrastructure for sustainable technology ecosystems.
+          </div>
+        </div>
+
+        <!-- === PERSON 2 === -->
+        <div class="person-card">
+        </div>
+
+        <!-- === PERSON 3 === -->
+        <div class="person-card">
+        </div>
+
+      </div>
+    </div>
+  </section>
+</body>
+</html>

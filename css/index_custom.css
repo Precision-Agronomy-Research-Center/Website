@@ -1,4 +1,3 @@
-  <style>
     /* =============================
        BASICS
     ============================== */
@@ -183,4 +182,3 @@
 
     /* Just in case slides.css sets scrollbars on everything */
     .carousel-viewport::-webkit-scrollbar { display: none; }
-  </style>

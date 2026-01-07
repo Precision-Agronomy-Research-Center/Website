@@ -1,20 +1,8 @@
 [
   {
-    "title": "NeuroGAIN",
-    "image": "assets/projects/img/neurogain.png",
+    "title": "LoRaWAN Literature Review",
+    "image": "assets/img/projects/LoRaWAN_review.png",
     "url": "https://example.com/neurogain",
     "subtitle": "Generative neuromechanical control"
-  },
-  {
-    "title": "HARMONIOUS",
-    "image": "assets/projects/img/harmonics.png",
-    "url": "https://example.com/harmonious",
-    "subtitle": "Open rehabilitation network"
-  },
-  {
-    "title": "Mobile STEM Lab",
-    "image": "assets/projects/img/microlab.png",
-    "url": "https://example.com/mobilestem",
-    "subtitle": "Field-deployable engineering education"
   }
 ]

@@ -1,4 +1,3 @@
-<script>
 async function loadProjectCards() {
   const track = document.getElementById("carouselTrack");
   if (!track) return;
@@ -31,4 +30,3 @@ async function loadProjectCards() {
 }
 
 document.addEventListener("DOMContentLoaded", loadProjectCards);
-</script>

@@ -8,196 +8,12 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700|Material+Icons" rel="stylesheet">
   <link href="css/slides.css" rel="stylesheet" />
 
-  <style>
-    /* =============================
-       BASICS
-    ============================== */
-    body { font-family: Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif; }
-
-    /* =============================
-       HERO (title + location)
-    ============================== */
-    .hero-banner { position: relative; }
-
-    /* keep your slide sizing behavior, but let the content breathe */
-    .slide.hero-banner { height: 50vh; }
-
-    .hero-banner .background {
-      position: absolute;
-      inset: 0;
-      background-size: cover;
-      background-position: center;
-      z-index: 0;
-    }
-
-    /* overlay so text is readable regardless of the photo */
-    .hero-banner::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg,
-        rgba(0,0,0,0.62) 0%,
-        rgba(0,0,0,0.35) 55%,
-        rgba(0,0,0,0.10) 100%
-      );
-      z-index: 1;
-    }
-
-    .hero-banner .content {
-      position: relative;
-      z-index: 2;
-      padding: 3rem 1.25rem 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .hero-banner h1 {
-      margin: 0;
-      color: #fff;
-      font-weight: 500;
-      letter-spacing: 0.2px;
-      font-size: clamp(2rem, 3.2vw, 3.4rem);
-      line-height: 1.08;
-      text-shadow: 0 2px 18px rgba(0,0,0,0.55);
-    }
-
-    .hero-banner h2 {
-      margin: 0.75rem 0 0;
-      color: rgba(255,255,255,0.92);
-      font-weight: 300;
-      font-size: clamp(1.1rem, 1.6vw, 1.6rem);
-      text-shadow: 0 2px 14px rgba(0,0,0,0.55);
-    }
-
-    /* =============================
-       ACTION BANNER (Explore buttons)
-    ============================== */
-    .action-banner {
-      background: rgba(218, 250, 224, 0.85);
-      padding: 1.25rem 0 1.75rem;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 1.25rem;
-    }
-
-    .section-title {
-      color: #1b1b1b;
-      margin: 0 0 1rem;
-      font-weight: 500;
-      font-size: 1.9rem;
-    }
-
-    .action-row {
-      display: flex;
-      gap: 1.25rem;
-      align-items: stretch;
-      flex-wrap: wrap;
-    }
-
-    .action-btn {
-      flex: 1 1 240px;
-      text-align: center;
-      padding: 1.15rem 1rem;
-      background: #896900;
-      color: #fff;
-      text-decoration: none;
-      font-weight: 500;
-      border-radius: 6px;
-      transition: background 0.2s ease;
-    }
-
-    .action-btn:hover { background: #a88300; }
-
-    /* =============================
-       CAROUSEL BANNER (Activities)
-       Key: NO overflow-x:auto, no scrollbar
-    ============================== */
-    .carousel-banner {
-      background: rgba(218, 250, 224, 0.85);
-      padding: 1.5rem 0 2.25rem;
-    }
-
-    .carousel-shell {
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    /* viewport hides overflow (no scrollbar) */
-    .carousel-viewport {
-      width: 100%;
-      overflow: hidden;
-      position: relative;
-      touch-action: pan-y; /* allow page vertical scroll; we handle horizontal dragging */
-    }
-
-    /* track moves via transform */
-    .carousel-track {
-      display: flex;
-      gap: 1.25rem;
-      will-change: transform;
-      transition: transform 420ms ease;
-      transform: translateX(0px);
-    }
-
-    .project-card {
-      flex: 0 0 360px;
-      padding: 1.75rem 1.5rem;
-      background: #171717;
-      color: #fff;
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: 0 10px 18px rgba(0,0,0,0.12);
-      font-size: 1.35rem;
-      font-weight: 400;
-    }
-
-    /* Arrow buttons (no weird glyph boxes, real buttons) */
-    .car-btn {
-      appearance: none;
-      -webkit-appearance: none;
-      border: 0;
-      background: rgba(0,0,0,0.55);
-      color: #fff;
-      width: 44px;
-      height: 44px;
-      border-radius: 10px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 26px;
-      line-height: 1;
-      user-select: none;
-    }
-
-    .car-btn:hover { background: rgba(0,0,0,0.72); }
-    .car-btn:active { transform: translateY(1px); }
-
-    /* keep arrows from drifting into layout weirdness */
-    .car-btn:focus { outline: 2px solid rgba(137,105,0,0.75); outline-offset: 2px; }
-
-    /* Mobile: hide arrows, swipe only; cards become wider */
-    @media (max-width: 800px) {
-      .car-btn { display: none; }
-      .project-card { flex-basis: 84vw; }
-      .section-title { font-size: 1.6rem; }
-    }
-
-    /* Just in case slides.css sets scrollbars on everything */
-    .carousel-viewport::-webkit-scrollbar { display: none; }
-  </style>
+<link rel="stylesheet" href="css/index_custom.css">
 </head>
 
 <body class="slides horizontal simplifiedMobile animated">
-
-  <!-- ===== SVG LOGO ===== -->
   <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
-    <symbol id="logo" viewBox="0 0 300 90" preserveAspectRatio="xMidYMid meet">
+    <symbol id="logo" viewBox="-50 -10 300 120" preserveAspectRatio="xMidYMid meet">
       <rect x="0" y="20" width="200" height="70" fill="#896900" rx="4" />
       <text x="20" y="72" fill="#fff" font-family="Baskerville, 'Baskerville Old Face', serif" font-weight="700" font-size="48">
         P A R C
@@ -210,9 +26,7 @@
     <div class="banner-inner">
       <a href="https://parccommons.org" class="logo-link">
         <svg class="banner-logo"><use xlink:href="#logo"></use></svg>
-            <h1>The Precision Agronomy Research Center</h1>
-      <h2>Tallassee, AL 36078</h2>
-</a>
+      </a>
       <nav class="nav-links">
         <a href="index.html">Home</a>
         <a href="about.html">About</a>
@@ -220,20 +34,24 @@
         <a href="resources.html">Research</a>
         <a href="project_pending.html">Collaborate</a>
       </nav>
+    </div>    
     </div>
   </header>
+  
 
   <!-- ===== HERO / TITLE ===== -->
   <section class="slide hero-banner fade-6 kenBurns">
     <div class="background" style="background-image:url('assets/img/background/PARC_narrow.jpg')"></div>
     <div class="content">
+          <h1>The Precision Agronomy Research Center</h1> 
+          <h2><i>Tallassee, AL 36078</i></h2>
     </div>
   </section>
 
   <!-- ===== ACTION BUTTON STRIP ===== -->
   <section class="action-banner">
     <div class="container">
-      <h3 class="section-title">Explore</h3>
+      <h3 class="section-title"><i>Explore:</i></h3>
       <div class="action-row">
         <a href="project_pending.html" class="action-btn">Collaboration &amp; Opportunities</a>
         <a href="resources.html" class="action-btn">Research &amp; Resources</a>
@@ -245,17 +63,18 @@
   <!-- ===== PROJECT CAROUSEL ===== -->
   <section class="carousel-banner">
     <div class="container">
-      <h3 class="section-title">Activities</h3>
+      <h3 class="section-title"><i>Activities:</i></h3>
 
       <div class="carousel-shell" aria-label="Activities carousel">
         <button class="car-btn" id="carPrev" type="button" aria-label="Previous">&#8249;</button>
 
         <div class="carousel-viewport" id="carViewport">
-          <div class="carousel-track" id="carTrack">
-            <div class="project-card">Mobile Agronomy Lab</div>
+          <div class="carousel-track" id="carouselTrack">
+
+            <!-- <div class="project-card">Mobile Agronomy Lab</div>
             <div class="project-card">Open Soil Sensors</div>
             <div class="project-card">Rural Diagnostics</div>
-            <div class="project-card">Drone Field Mapping</div>
+            <div class="project-card">Drone Field Mapping</div> -->
           </div>
         </div>
 

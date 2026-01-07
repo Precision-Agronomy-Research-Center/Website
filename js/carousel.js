@@ -17,8 +17,8 @@ async function loadProjectCards() {
           <div class="thumb">
             <img src="${p.image}" alt="${p.title}" loading="lazy">
           </div>` : ""}
-        <h3 class="title">${p.title}</h3>
-        ${p.subtitle ? `<div class="meta">${p.subtitle}</div>` : ""}
+        <h3 class="title" style="color:#896900;">${p.title}</h3>
+        ${p.subtitle ? `<div class="meta" style="color:#896900;">${p.subtitle}</div>` : ""}
       </a>
     `;
 

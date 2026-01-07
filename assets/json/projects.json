@@ -1,8 +1,26 @@
 [
   {
-    "title": "LoRaWAN Literature Review",
+    "title": "Mobile Laboratories",
+    "image": "assets/img/projects/mobile_labs.png",
+    "url": "",
+    "subtitle": "In partnership with our community, we are developing a fleet of mobile laboratories to support on-site agricultural research and community outreach"
+  },
+  {
+    "title": "Open Microscopy",
+    "image": "assets/img/projects/OpenFlexure.png",
+    "url": "https://microlab.parccommons.org",
+    "subtitle": "We are working to develop an open microscopy dataset and algorithms for the OpenFlexure microscope to support diy agricultural and health modeling in resource-constrained environments"
+  },
+    {
+    "title": "LoRaWAN Collaborative Review",
     "image": "assets/img/projects/LoRaWAN_review.png",
     "url": "https://github.com/Precision-Agronomy-Research-Center/LoRaWAN_Lit_Review/tree/main",
-    "subtitle": "A Collabotorative Literature Review on <u>Lo</u>ng <u>Ra</u>nge <u>W</u>ireless <u>A</u>rea <u>N</u>etwork (<u>LoRaWAN</u>) Technology For Agriculture"
+    "subtitle": "We are writing a collaborative literature review on <u>Lo</u>ng <u>Ra</u>nge <u>W</u>ireless <u>A</u>rea <u>N</u>etwork (<u>LoRaWAN</u>) technology for agricultural monitoring and operator decision support"
+  },
+  {
+    "title": "OSE Skid Steer Control",
+    "image": "assets/img/projects/LoRaWAN_review.png",
+    "url": "https://github.com/Precision-Agronomy-Research-Center/LoRaWAN_Lit_Review/tree/main",
+    "subtitle": "We are collaborating with Open Source Ecology to develop a control system for their upcoming open source skid steer platform to support low-cost infrastructure development"
   }
 ]

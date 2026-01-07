@@ -67,7 +67,6 @@ a:hover {
   left: 0;
   width: 100%;
   height: 8vh;
-  background: rgba(17, 17, 17, 0.85);
   color: #fff;
   z-index: 1000;
   display: flex;
@@ -102,7 +101,6 @@ a:hover {
 .slide {
   position: relative;
   width: 100%;
-  height: 100vh;
   overflow: hidden;
 }
 
@@ -125,8 +123,8 @@ a:hover {
 .content {
   position: relative;
   z-index: 2;
-  top: 8vh;
-  height: calc(100vh - 8vh);
+  top: 0vh;
+  height: 50vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -447,7 +445,7 @@ a:hover {
     }
 
     a {
-      color: #9fd3ff;
+      color: #ffffff;
     }
     a:hover {
       text-decoration: underline;

@@ -95,10 +95,11 @@
       background: #896900;
       color: #fff;
       text-decoration: none;
-      font-weight: 200;
       border-radius: 6px;
       transition: background 0.2s ease;
-      font-size:120%;
+      font-size:170%;
+      font-family: baskerville, serif;
+      font-weight: 200;
     }
 
     .action-btn:hover { background: #a88300; }

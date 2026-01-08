@@ -15,11 +15,11 @@
     "title": "LoRaWAN Collaborative Review",
     "image": "assets/img/projects/LoRaWAN_review.png",
     "url": "https://github.com/Precision-Agronomy-Research-Center/LoRaWAN_Lit_Review/tree/main",
-    "subtitle": "We are writing a collaborative literature review on <u>Lo</u>ng <u>Ra</u>nge <u>W</u>ireless <u>A</u>rea <u>N</u>etwork (<u>LoRaWAN</u>) technology for agricultural monitoring and operator decision support"
+    "subtitle": "We are writing a collaborative literature review on Long Range Wireless Area Network (LoRaWAN) technology for agricultural monitoring and operator decision support"
   },
   {
-    "title": "OSE Skid Steer Control",
-    "image": "assets/img/projects/LoRaWAN_review.png",
+    "title": "Ground Control",
+    "image": "assets/img/projects/ground_control.png",
     "url": "https://github.com/Precision-Agronomy-Research-Center/LoRaWAN_Lit_Review/tree/main",
     "subtitle": "We are collaborating with Open Source Ecology to develop a control system for their upcoming open source skid steer platform to support low-cost infrastructure development"
   }

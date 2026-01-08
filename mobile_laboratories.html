@@ -3,24 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PARC Mobile Labs</title>
+  <title>PARC Home</title>
 
   <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700|Material+Icons" rel="stylesheet">
   <link href="css/slides.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/index_custom.css">
+</head>
 
-  <style>
-    /* =========================================================
-       PARC Mobile Labs (Slides look, normal scrolling document)
-       Key idea:
-         - Keep ONE hero section as a Slides "slide"
-         - Everything after that is normal document sections
-         - Avoid "running out of window" by not nesting long content
-           inside .slide / .slides height locks.
-       ========================================================= */
+<style>
+
 
     html { scroll-behavior: smooth; }
 
-    /* ---- Page scroll unlock (scoped) ---- */
     body.mobilelab-page{
       overflow-y: auto !important;
       overflow-x: hidden !important;
@@ -159,7 +153,6 @@
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,0.22);
       background: rgba(0,0,0,0.18);
-      color: rgba(255,255,255,0.92);
       text-decoration: none;
       transition: transform 120ms ease, background 120ms ease;
       white-space: nowrap;
@@ -171,48 +164,43 @@
     }
 
     /* ---- Cards + grids that cannot overflow ---- */
-    .content-grid{
+    .content-grid2{
       display:grid;
       grid-template-columns: 1.15fr 0.85fr;
       gap: 16px;
       align-items: start;
+      background: rgba(234, 241, 236 1);
+      color:#896900;
+    }
+
+    .content-grid3{
+      display:grid;
+      grid-template-columns: .5fr 0.5fr 0.5fr;
+      gap: 16px;
+      align-items: start;
+      background: rgba(234, 241, 236 1);
+      color:#896900;
     }
     @media (max-width: 980px){
-      .content-grid{ grid-template-columns: 1fr; }
+      .content-grid2{ grid-template-columns: 1fr; }
     }
 
     .card{
       width: 100%;
       max-width: 100%;
       box-sizing: border-box;
-      background: rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.00);
       border: 1px solid rgba(255,255,255,0.18);
       border-radius: 10px;
       padding: 16px 16px;
-      backdrop-filter: blur(10px);
       overflow: hidden; /* prevents any weird children from spilling */
     }
     .card h2{
       margin: 0 0 10px;
     }
     .muted{ opacity: 0.92; }
-    .measure{ max-width: 92ch; }
-
-    .soft-highlight{
-      background: rgba(218,250,224,0.10);
-      border-color: rgba(218,250,224,0.25);
-    }
-
-    .chips{ margin-top: 10px; }
-    .chip{
-      display:inline-block;
-      border: 1px solid rgba(255,255,255,0.20);
-      background: rgba(0,0,0,0.18);
-      padding: 6px 10px;
-      border-radius: 999px;
-      margin: 6px 8px 0 0;
-      font-size: 0.95em;
-      white-space: nowrap;
+    .measure{ 
+      max-width: 92ch; 
     }
 
     /* If any long strings appear, force wrapping */
@@ -220,24 +208,12 @@
       overflow-wrap: anywhere;
       word-break: normal;
     }
-
-    /* Footer */
-    .page-footer{
-      opacity: 0.9;
-      margin-top: 18px;
-      font-size: 0.95em;
-      border-top: 1px solid rgba(255,255,255,0.18);
-      padding-top: 12px;
-    }
-
-    /* Anchor offset for fixed header */
+   
     .anchor{ scroll-margin-top: 110px; }
-  </style>
-</head>
 
-<body class="slides horizontal simplifiedMobile animated mobilelab-page">
+</style>
 
-  <!-- ===== SVG LOGO ===== -->
+<body class="slides horizontal simplifiedMobile animated">
   <svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
     <symbol id="logo" viewBox="-50 -10 300 120" preserveAspectRatio="xMidYMid meet">
       <rect x="0" y="20" width="200" height="70" fill="#896900" rx="4" />
@@ -258,179 +234,282 @@
         <a href="about.html">About</a>
         <a href="people.html">People</a>
         <a href="resources.html">Research</a>
-        <a href="project_pending.html">Collaborate</a>
+        <a href="research.html">Collaborate</a>
       </nav>
-   l>
+    </div>    
     </div>
   </header>
+  
 
-  <!-- Spacer so fixed banner doesn't cover hero -->
-  <div class="page-spacer"></div>
-
-  <!-- ===== HERO / TITLE (ONE SLIDE ONLY) ===== -->
-  <section class="slide hero-slide fade-6 kenBurns bg-wrap">
-    <div class="flow" aria-hidden="true"></div>
-    <div class="flow2" aria-hidden="true"></div>
-
+  <!-- ===== HERO / TITLE ===== -->
+  <section class="slide hero-banner fade-6 kenBurns">
+    <div class="background" style="background-image:url('assets/img/background/PARC_narrow.jpg')"></div>
     <div class="content">
-      <div class="container">
-        <h1 class="page-title" style="font-size: clamp(34px, 3vw, 52px);">
-          PARC Mobile Labs
-        </h1>
-        <p class="tagline" style="font-size: clamp(16px, 1.35vw, 20px);">
-          Robust, cost-effective mobile laboratories for on-site agricultural research and community outreach.<br>
-          Designed to be easier to power, supply, and modify than standalone buildings.<br>
-          Built to scale by replication, not reinvention.
+          <h1>Mobile Laboratories</h1>
+          <br>  
+          <p class="muted measure">
+          In partnership with our community, we are developing a fleet of mobile laboratories 
+          to support for rapid field ecology, veterinary medicine, healthcare, and community outreach. 
+          These labs are intended to reduce friction for data collection, training, and demonstration by bringing
+          advanced lab-grade capabilities to the field. Our laboratories are more robust and cost-effective 
+          than traditional laboratories, and can be modified 
+          to suit new needs and capabilities.
         </p>
-      </div>
+          </i></h2>
     </div>
   </section>
 
-  <!-- ===== ACTION BUTTON STRIP (LIKE HOME PAGE) ===== -->
-  <section class="action-banner">
-    <div class="container">
-      <h3 class="section-title">Explore:</h3>
-      <div class="action-row">
-        <a class="action-btn" href="#overview"><i>OVERVIEW</i></a>
-        <a class="action-btn" href="#why-mobile"><i>WHY MOBILE</i></a>
-        <a class="action-btn" href="#what-inside"><i>WHAT’S INSIDE</i></a>
-        <a class="action-btn" href="#get-involved"><i>GET INVOLVED</i></a>
-      </div>
-    </div>
-  </section>
 
-  <!-- ===== LONGFORM CONTENT (NORMAL SECTIONS, NO SLIDE LOCK) ===== -->
-  <section class="section bg-wrap" id="overview">
-    <div class="flow" aria-hidden="true" style="opacity:0.55;"></div>
-    <div class="container content-grid">
 
-      <div class="card anchor">
-        <h2 style="text-align:left;">Overview</h2>
-        <p class="muted measure">
-          In partnership with our community, we are developing a fleet of mobile laboratories to support on-site agricultural research and
-          community outreach. These labs are intended to reduce friction for data collection, training, and demonstration by bringing
-          capability to the field.
-        </p>
 
-        <div class="card soft-highlight">
-          <p class="muted" style="margin:0;">
-            <strong style="color:#fff;">Aspirational scope (marginally correct):</strong>
-            I am working with a group of open-source agronomists, some local livestock and poultry smallholders, and local agricultural policy
-            advisory commissions to build clinical-grade mobile laboratories for on-site field ecological testing through PARC.
-          </p>
-        </div>
 
-        <p class="muted measure">
-          I have already deployed one mobile lab stocked with OpenFlexure Microscopes and poultry incubators at PARC, and I am working to expand
-          to local producers as part of grant search and partnership development.
+  <section class="carousel-banner">
+
+    <div class="container content-grid2">
+      <div class="card anchor" style="background: rgba(255,255,255, 0.50);">
+        <h1 style="text-align:left;color:#896900;">Lab_01:</h1> 
+        <h2 style="color: #896900;"><i>Mobile Agronomy Field Station</i></h2>
+        <img src="image_path.jpg" alt="Description of the image">
+        <p class="muted" style="margin:0;">
+            Working with open-source agronomists at <a href="greenlathe.org">GreenLathe</a>, 
+            local livestock and poultry smallholders in Alabama, and local agricultural policy
+            advisory commissions, we are building clinical-grade mobile laboratories 
+            for on-site field ecological testing through PARC.
+            We have already deployed one mobile lab stocked with <a href="https://openflexure.org/projects/microscope/">OpenFlexure Microscopes</a> 
+            and poultry incubators at PARC. 
+            <br>
         </p>
       </div>
-
-      <div class="card" id="status">
-        <h2 style="text-align:left;">Current status</h2>
-        <p class="muted measure">
-          The immediate focus is turning a deployed prototype into a repeatable template: a build spec, a packing list, and a small set of
-          field workflows that can be replicated and adapted.
-        </p>
-
-        <div class="chips">
-          <span class="chip">Prototype deployed</span>
-          <span class="chip">Microscopy workflows</span>
-          <span class="chip">Incubation workflows</span>
-          <span class="chip">Grant + partner search</span>
-        </div>
-
-        <hr style="border:0; border-top:1px solid rgba(255,255,255,0.18); margin: 14px 0;" />
-
-        <p class="muted measure" style="margin-bottom:0;">
-          I saw your most recent video where you discussed developing an open-source, USDA-compliant mobile animal processing unit.
-          This project resonates strongly with my current work and I believe I could provide some helpful support.
-        </p>
-      </div>
-
-    </div>
-  </section>
-
-  <section class="section bg-wrap" id="why-mobile">
-    <div class="flow2" aria-hidden="true" style="opacity:0.55;"></div>
-    <div class="container">
-      <div class="card anchor">
-        <h2 style="text-align:left;">Why mobile labs</h2>
-
-        <div class="content-grid" style="margin-top: 10px;">
-          <div class="card" style="background: rgba(255,255,255,0.08);">
-            <p class="muted measure" style="margin-top:0;">
-              Mobile labs are a pragmatic way to deploy research and outreach capacity without waiting on facilities, permitting, or
-              permanent infrastructure. They also make iteration cheaper and faster.
-            </p>
-
-            <ul class="muted measure" style="margin: 10px 0 0; padding-left: 18px;">
-              <li><strong style="color:#fff;">Robust and field-ready:</strong> designed for transport and imperfect conditions.</li>
-              <li><strong style="color:#fff;">Cost-effective scaling:</strong> replicate a template instead of funding new buildings.</li>
-              <li><strong style="color:#fff;">Utility flexibility:</strong> often easier to provision temporary power and water.</li>
-              <li><strong style="color:#fff;">Faster iteration:</strong> layouts and mounts can change as requirements evolve.</li>
-              <li><strong style="color:#fff;">Access and outreach:</strong> visit producers, classrooms, and community events.</li>
-              <li><strong style="color:#fff;">Operational realism:</strong> build methods where they’ll actually be used.</li>
-            </ul>
-          </div>
-
-          <div class="card" style="background: rgba(0,0,0,0.20);">
-            <h3 style="margin-top:0;">Design priority</h3>
-            <p class="muted measure">
-              Keep the lab easy to maintain, easy to modify, and easy to explain so it can be adopted and sustained locally.
-            </p>
-
-            <h3>Operating principle</h3>
-            <p class="muted measure" style="margin-bottom:0;">
-              Start with one workflow and one deployment site, document everything, then scale by replication.
-            </p>
+        <div class="card" style="background: rgba(255,255,255, 0.50);">
+          <h2 style="text-align:left;color:#896900;">Current status</h2>
+          <p class="muted measure">
+              <ul  style="margin-left: 10%;">
+                <li> Lab deployed </li>
+                <p class="muted">
+                  The laboratory is deployed and in-use at PARC's 40-acre main campus.
+                </p>
+                <li>
+                  Activities
+                  <ul style="margin-left: 10%;">
+                    <li>Microscopy study </li>
+                  </ul>
+                </li>
+                <li> Seeking funds </li>
+                <p class="muted">
+                  We are seeking continuing funding for equipment like a secondary water heater, graphics processors for modeling and simulation, animal feed storage, a seed bank, soil sample storage
+                </p>
+              </ul>
           </div>
         </div>
-
-      </div>
-    </div>
-  </section>
-
-  <section class="section bg-wrap" id="what-inside">
-    <div class="flow" aria-hidden="true" style="opacity:0.55;"></div>
-    <div class="container content-grid">
-
-      <div class="card anchor">
-        <h2 style="text-align:left;">What a unit can include</h2>
-        <p class="muted measure">
-          Inventory varies by deployment, but the intent is a modular set of capabilities supporting sampling, basic analysis, and documentation.
-        </p>
-
-        <ul class="muted measure" style="margin: 10px 0 0; padding-left: 18px;">
-          <li><strong style="color:#fff;">Microscopy:</strong> OpenFlexure Microscopes for imaging, teaching, and sample inspection.</li>
-          <li><strong style="color:#fff;">Incubation:</strong> poultry incubators and simple environmental monitoring.</li>
-          <li><strong style="color:#fff;">Sampling + labeling:</strong> consumables, labeling systems, and reproducible record-keeping.</li>
-          <li><strong style="color:#fff;">Power strategy:</strong> grid power, generator integration, and battery-backed critical loads.</li>
-          <li><strong style="color:#fff;">Data capture:</strong> standard logging templates and photo documentation.</li>
-        </ul>
       </div>
 
-      <div class="card anchor" id="get-involved">
-        <h2 style="text-align:left;">Get involved</h2>
-        <p class="muted measure">
-          If you are a producer, educator, researcher, or local stakeholder interested in hosting a visit, co-designing a workflow, or supporting
-          build-out, I would like to talk. This effort is partnership-driven, and the most useful inputs often come from the realities of daily operations.
+      <div class="container content-grid2" style="margin-top: 3%;">
+      <div class="card anchor" style="background: rgba(255,255,255, 0.50);">
+        <h1 style="text-align:left;color:#896900;">Lab_02:</h1> 
+        <h2 style="color: #896900;"><i>STEM Lab</i></h2>
+        <img src="image_path.jpg" alt="Description of the image">
+        <p class="muted" style="margin:0;">
+            This lab is a mobile classroom owned by the local school board and 
+            managed by Dr. Baskaran. He teaches practical agronomy curriculum, 
+            and manages lab transportation and logistics. PARC utilizes the lab 
+            to collect soil and water samples from the four K-12 schools 
+            in the district. 
+            <br>
         </p>
-
-        <ul class="muted measure" style="margin: 10px 0 0; padding-left: 18px;">
-          <li><strong style="color:#fff;">Producers:</strong> highest-friction testing needs and what “good enough” looks like.</li>
-          <li><strong style="color:#fff;">Educators:</strong> modules that translate into repeatable, teachable labs.</li>
-          <li><strong style="color:#fff;">Researchers:</strong> minimal instrumentation requirements for field-compatible study designs.</li>
-          <li><strong style="color:#fff;">Advisory groups:</strong> align documentation and QA practices with local expectations.</li>
-        </ul>
-
-        <div class="page-footer">
-          <div class="muted">© PARC. This page describes an evolving program; some capabilities are aspirational and vary by unit.</div>
+      </div>
+        <div class="card" style="background: rgba(255,255,255, 0.50);">
+          <h2 style="text-align:left;color:#896900;">Current status</h2>
+          <p class="muted measure">
+              <ul  style="margin-left: 10%;">
+                <li> Lab deployed </li>
+                <p class="muted">
+                  The laboratory is deployed and in-use at PARC's 40-acre main campus.
+                </p>
+                <li>
+                  Activities
+                  <ul style="margin-left: 10%;">
+                    <li>Microscopy study </li>
+                  </ul>
+                </li>
+                <li> Seeking funds </li>
+                <p class="muted">
+                  We are seeking continuing funding for equipment like a secondary water heater, graphics processors for modeling and simulation, animal feed storage, a seed bank, soil sample storage
+                </p>
+              </ul>
+          </div>
         </div>
       </div>
 
-    </div>
+
+
+
+      <div class="container content-grid3" style="margin-top: 3%;">
+      <div class="card anchor" style="background: rgba(255,255,255, 0.50);">
+        <h2 style="text-align:left;color:#896900;">What is a mobile lab?</h2> 
+        <img src="image_path.jpg" alt="Description of the image">
+        <p class="muted" style="margin:0;">
+        A mobile lab can be...            
+        </p>
+      </div>
+      <div class="card" style="background: rgba(255,255,255, 0.50);">
+        <h2 style="text-align:left;color:#896900;">Why Mobile Labs?</h2>
+          <p class="muted measure">
+            Mobile labs:
+            <ul  style="margin-left: 10%;">
+                <li> Are less expensive to build and deploy than traditional labs</li>
+                  </ul>
+          </div>
+                <div class="card" style="background: rgba(255,255,255, 0.50);">
+        <h2 style="text-align:left;color:#896900;">Is a Mobile Lab right for me?</h2>
+          <p class="muted measure">
+            Mobile labs:
+            <ul  style="margin-left: 10%;">
+                <li> Are less expensive to build and deploy than traditional labs</li>
+                  </ul>
+          </div>
+        </div>
+
+
   </section>
 
+
+  <script>
+    (function () {
+      const track = document.getElementById("carouselTrack");
+      const viewport = document.getElementById("carViewport");
+      const prevBtn = document.getElementById("carPrev");
+      const nextBtn = document.getElementById("carNext");
+
+      if (!track || !viewport) return;
+
+      let index = 0;
+      let timer = null;
+
+      function cards() { return Array.from(track.children); }
+
+      function stepPx() {
+        const first = cards()[0];
+        if (!first) return 0;
+        const gap = parseFloat(getComputedStyle(track).gap || "0") || 0;
+        return first.getBoundingClientRect().width + gap;
+      }
+
+      function maxIndex() {
+        return Math.max(0, cards().length - 1);
+      }
+
+      function clamp(i) {
+        return Math.max(0, Math.min(maxIndex(), i));
+      }
+
+      function goTo(i, animate = true) {
+        index = clamp(i);
+        track.style.transition = animate ? "transform 420ms ease" : "none";
+        track.style.transform = `translateX(${-index * stepPx()}px)`;
+      }
+
+      function next() {
+        const m = maxIndex();
+        goTo(index >= m ? 0 : index + 1);
+      }
+
+      function prev() {
+        const m = maxIndex();
+        goTo(index <= 0 ? m : index - 1);
+      }
+
+      function startAuto() {
+        stopAuto();
+        timer = setInterval(next, 4500);
+      }
+
+      function stopAuto() {
+        if (timer) clearInterval(timer);
+        timer = null;
+      }
+
+      // Buttons
+      if (nextBtn) nextBtn.addEventListener("click", () => { stopAuto(); next(); startAuto(); });
+      if (prevBtn) prevBtn.addEventListener("click", () => { stopAuto(); prev(); startAuto(); });
+
+      // Pause on hover (desktop)
+      viewport.addEventListener("mouseenter", stopAuto);
+      viewport.addEventListener("mouseleave", startAuto);
+
+      // Drag / swipe support (no scrollbar)
+      let dragging = false;
+      let startX = 0;
+      let startOffset = 0;
+
+      function currentOffsetX() {
+        const tr = getComputedStyle(track).transform;
+        if (!tr || tr === "none") return 0;
+        const m = new DOMMatrixReadOnly(tr);
+        return m.m41 || 0;
+      }
+
+      viewport.addEventListener("pointerdown", (e) => {
+        dragging = true;
+        viewport.setPointerCapture(e.pointerId);
+        startX = e.clientX;
+        startOffset = currentOffsetX();
+        track.style.transition = "none";
+        stopAuto();
+      });
+
+      viewport.addEventListener("pointermove", (e) => {
+        if (!dragging) return;
+        const dx = e.clientX - startX;
+        track.style.transform = `translateX(${startOffset + dx}px)`;
+      });
+
+      viewport.addEventListener("pointerup", (e) => {
+        if (!dragging) return;
+        dragging = false;
+
+        const dx = e.clientX - startX;
+        const threshold = Math.min(140, stepPx() * 0.22);
+
+        if (dx < -threshold) next();
+        else if (dx > threshold) prev();
+        else goTo(index);
+
+        startAuto();
+      });
+
+      // Keep alignment correct on resize
+      window.addEventListener("resize", () => goTo(index, false));
+
+      // Init
+      goTo(0, false);
+      startAuto();
+    })();
+  </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PARC Mobile Labs</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700|Material+Icons" rel="stylesheet">
+  <link href="css/slides.css" rel="stylesheet" />
+
+  

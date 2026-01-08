@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PARC Mobile Labs</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700|Material+Icons" rel="stylesheet">
+  <link href="css/slides.css" rel="stylesheet" />
+
+  <style>
+    /* =========================================================
+       PARC Mobile Labs (Slides look, normal scrolling document)
+       Key idea:
+         - Keep ONE hero section as a Slides "slide"
+         - Everything after that is normal document sections
+         - Avoid "running out of window" by not nesting long content
+           inside .slide / .slides height locks.
+       ========================================================= */
+
+    html { scroll-behavior: smooth; }
+
+    /* ---- Page scroll unlock (scoped) ---- */
+    body.mobilelab-page{
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+      height: auto !important;
+      overscroll-behavior-y: contain;
+      background: #0b0f14;
+    }
+
+    /* Keep banner fixed and offset content */
+    body.mobilelab-page .banner{
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+    }
+    .page-spacer{ height: 88px; } /* adjust if banner height changes */
+
+    /* ---- Only the hero uses .slide. Let it behave like a hero. ---- */
+    body.mobilelab-page .hero-slide.slide{
+      min-height: calc(100vh - 88px);
+      height: auto !important;
+      overflow: hidden;
+      padding-top: 0 !important; /* we add spacer above */
+    }
+
+    /* ---- Longform sections are NOT slides ---- */
+    .section{
+      position: relative;
+      padding: 26px 0;
+    }
+    .section .container{
+      max-width: 1180px;
+    }
+
+    /* ---- Background continuity (like your home page feel) ---- */
+    .bg-wrap{
+      position: relative;
+      overflow: hidden;
+    }
+    .bg-wrap:before{
+      content:"";
+      position: absolute;
+      inset: 0;
+      background-image: url('assets/img/background/PARC_narrow.jpg');
+      background-size: cover;
+      background-position: center;
+      filter: saturate(1.05) contrast(1.05);
+      transform: scale(1.03);
+      opacity: 0.55;
+      z-index: 0;
+    }
+    .bg-wrap:after{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        radial-gradient(1200px 600px at 15% 10%, rgba(255,255,255,0.14), transparent 60%),
+        radial-gradient(900px 520px at 85% 15%, rgba(137,105,0,0.18), transparent 62%),
+        linear-gradient(180deg, rgba(0,0,0,0.48), rgba(0,0,0,0.78));
+      z-index: 1;
+      pointer-events: none;
+    }
+    .bg-wrap > *{ position: relative; z-index: 2; }
+
+    /* ---- Background flow blobs (kept subtle) ---- */
+    .flow{
+      position:absolute;
+      top:-140px; right:-170px;
+      width: 560px; height: 560px;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(218,250,224,0.20), transparent 62%),
+        radial-gradient(circle at 70% 60%, rgba(137,105,0,0.20), transparent 64%);
+      filter: blur(2px);
+      transform: rotate(10deg);
+      pointer-events:none;
+      opacity: 0.95;
+      z-index: 2;
+      animation: floaty 18s ease-in-out infinite;
+    }
+    .flow2{
+      position:absolute;
+      bottom:-180px; left:-190px;
+      width: 700px; height: 700px;
+      background:
+        radial-gradient(circle at 40% 40%, rgba(255,255,255,0.14), transparent 62%),
+        radial-gradient(circle at 70% 70%, rgba(137,105,0,0.14), transparent 64%);
+      filter: blur(2px);
+      transform: rotate(-8deg);
+      pointer-events:none;
+      opacity: 0.85;
+      z-index: 2;
+      animation: floaty2 22s ease-in-out infinite;
+    }
+    @keyframes floaty{
+      0% { transform: translate3d(0,0,0) rotate(10deg); }
+      50%{ transform: translate3d(-18px, 18px, 0) rotate(14deg); }
+      100%{ transform: translate3d(0,0,0) rotate(10deg); }
+    }
+    @keyframes floaty2{
+      0% { transform: translate3d(0,0,0) rotate(-8deg); }
+      50%{ transform: translate3d(22px, -16px, 0) rotate(-12deg); }
+      100%{ transform: translate3d(0,0,0) rotate(-8deg); }
+    }
+
+    /* ---- Typography ---- */
+    .page-title{
+      font-family: Georgia, "Times New Roman", Times, serif;
+      letter-spacing: 0.2px;
+      margin: 0 0 8px;
+    }
+    .tagline{
+      font-family: Georgia, "Times New Roman", Times, serif;
+      opacity: 0.9;
+      margin: 0;
+      line-height: 1.35;
+    }
+
+    /* ---- Action banner (like your home page) ---- */
+    .action-banner{
+      background: rgba(218, 250, 224, 0.18);
+      border-top: 1px solid rgba(255,255,255,0.14);
+      border-bottom: 1px solid rgba(255,255,255,0.14);
+      padding: 12px 0;
+    }
+    .section-title{
+      margin: 0 0 10px;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+    .action-row{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .action-btn{
+      display:inline-block;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(0,0,0,0.18);
+      color: rgba(255,255,255,0.92);
+      text-decoration: none;
+      transition: transform 120ms ease, background 120ms ease;
+      white-space: nowrap;
+    }
+    .action-btn:hover{
+      transform: translateY(-1px);
+      background: rgba(0,0,0,0.26);
+      text-decoration: none;
+    }
+
+    /* ---- Cards + grids that cannot overflow ---- */
+    .content-grid{
+      display:grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 16px;
+      align-items: start;
+    }
+    @media (max-width: 980px){
+      .content-grid{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 10px;
+      padding: 16px 16px;
+      backdrop-filter: blur(10px);
+      overflow: hidden; /* prevents any weird children from spilling */
+    }
+    .card h2{
+      margin: 0 0 10px;
+    }
+    .muted{ opacity: 0.92; }
+    .measure{ max-width: 92ch; }
+
+    .soft-highlight{
+      background: rgba(218,250,224,0.10);
+      border-color: rgba(218,250,224,0.25);
+    }
+
+    .chips{ margin-top: 10px; }
+    .chip{
+      display:inline-block;
+      border: 1px solid rgba(255,255,255,0.20);
+      background: rgba(0,0,0,0.18);
+      padding: 6px 10px;
+      border-radius: 999px;
+      margin: 6px 8px 0 0;
+      font-size: 0.95em;
+      white-space: nowrap;
+    }
+
+    /* If any long strings appear, force wrapping */
+    .card, .card *{
+      overflow-wrap: anywhere;
+      word-break: normal;
+    }
+
+    /* Footer */
+    .page-footer{
+      opacity: 0.9;
+      margin-top: 18px;
+      font-size: 0.95em;
+      border-top: 1px solid rgba(255,255,255,0.18);
+      padding-top: 12px;
+    }
+
+    /* Anchor offset for fixed header */
+    .anchor{ scroll-margin-top: 110px; }
+  </style>
+</head>
+
+<body class="slides horizontal simplifiedMobile animated mobilelab-page">
+
+  <!-- ===== SVG LOGO ===== -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
+    <symbol id="logo" viewBox="-50 -10 300 120" preserveAspectRatio="xMidYMid meet">
+      <rect x="0" y="20" width="200" height="70" fill="#896900" rx="4" />
+      <text x="20" y="72" fill="#fff" font-family="Baskerville, 'Baskerville Old Face', serif" font-weight="700" font-size="48">
+        P A R C
+      </text>
+    </symbol>
+  </svg>
+
+  <!-- ===== HEADER / NAVIGATION ===== -->
+  <header class="banner">
+    <div class="banner-inner">
+      <a href="https://parccommons.org" class="logo-link">
+        <svg class="banner-logo"><use xlink:href="#logo"></use></svg>
+      </a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="people.html">People</a>
+        <a href="resources.html">Research</a>
+        <a href="project_pending.html">Collaborate</a>
+      </nav>
+   l>
+    </div>
+  </header>
+
+  <!-- Spacer so fixed banner doesn't cover hero -->
+  <div class="page-spacer"></div>
+
+  <!-- ===== HERO / TITLE (ONE SLIDE ONLY) ===== -->
+  <section class="slide hero-slide fade-6 kenBurns bg-wrap">
+    <div class="flow" aria-hidden="true"></div>
+    <div class="flow2" aria-hidden="true"></div>
+
+    <div class="content">
+      <div class="container">
+        <h1 class="page-title" style="font-size: clamp(34px, 3vw, 52px);">
+          PARC Mobile Labs
+        </h1>
+        <p class="tagline" style="font-size: clamp(16px, 1.35vw, 20px);">
+          Robust, cost-effective mobile laboratories for on-site agricultural research and community outreach.<br>
+          Designed to be easier to power, supply, and modify than standalone buildings.<br>
+          Built to scale by replication, not reinvention.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ACTION BUTTON STRIP (LIKE HOME PAGE) ===== -->
+  <section class="action-banner">
+    <div class="container">
+      <h3 class="section-title">Explore:</h3>
+      <div class="action-row">
+        <a class="action-btn" href="#overview"><i>OVERVIEW</i></a>
+        <a class="action-btn" href="#why-mobile"><i>WHY MOBILE</i></a>
+        <a class="action-btn" href="#what-inside"><i>WHAT’S INSIDE</i></a>
+        <a class="action-btn" href="#get-involved"><i>GET INVOLVED</i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== LONGFORM CONTENT (NORMAL SECTIONS, NO SLIDE LOCK) ===== -->
+  <section class="section bg-wrap" id="overview">
+    <div class="flow" aria-hidden="true" style="opacity:0.55;"></div>
+    <div class="container content-grid">
+
+      <div class="card anchor">
+        <h2 style="text-align:left;">Overview</h2>
+        <p class="muted measure">
+          In partnership with our community, we are developing a fleet of mobile laboratories to support on-site agricultural research and
+          community outreach. These labs are intended to reduce friction for data collection, training, and demonstration by bringing
+          capability to the field.
+        </p>
+
+        <div class="card soft-highlight">
+          <p class="muted" style="margin:0;">
+            <strong style="color:#fff;">Aspirational scope (marginally correct):</strong>
+            I am working with a group of open-source agronomists, some local livestock and poultry smallholders, and local agricultural policy
+            advisory commissions to build clinical-grade mobile laboratories for on-site field ecological testing through PARC.
+          </p>
+        </div>
+
+        <p class="muted measure">
+          I have already deployed one mobile lab stocked with OpenFlexure Microscopes and poultry incubators at PARC, and I am working to expand
+          to local producers as part of grant search and partnership development.
+        </p>
+      </div>
+
+      <div class="card" id="status">
+        <h2 style="text-align:left;">Current status</h2>
+        <p class="muted measure">
+          The immediate focus is turning a deployed prototype into a repeatable template: a build spec, a packing list, and a small set of
+          field workflows that can be replicated and adapted.
+        </p>
+
+        <div class="chips">
+          <span class="chip">Prototype deployed</span>
+          <span class="chip">Microscopy workflows</span>
+          <span class="chip">Incubation workflows</span>
+          <span class="chip">Grant + partner search</span>
+        </div>
+
+        <hr style="border:0; border-top:1px solid rgba(255,255,255,0.18); margin: 14px 0;" />
+
+        <p class="muted measure" style="margin-bottom:0;">
+          I saw your most recent video where you discussed developing an open-source, USDA-compliant mobile animal processing unit.
+          This project resonates strongly with my current work and I believe I could provide some helpful support.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="section bg-wrap" id="why-mobile">
+    <div class="flow2" aria-hidden="true" style="opacity:0.55;"></div>
+    <div class="container">
+      <div class="card anchor">
+        <h2 style="text-align:left;">Why mobile labs</h2>
+
+        <div class="content-grid" style="margin-top: 10px;">
+          <div class="card" style="background: rgba(255,255,255,0.08);">
+            <p class="muted measure" style="margin-top:0;">
+              Mobile labs are a pragmatic way to deploy research and outreach capacity without waiting on facilities, permitting, or
+              permanent infrastructure. They also make iteration cheaper and faster.
+            </p>
+
+            <ul class="muted measure" style="margin: 10px 0 0; padding-left: 18px;">
+              <li><strong style="color:#fff;">Robust and field-ready:</strong> designed for transport and imperfect conditions.</li>
+              <li><strong style="color:#fff;">Cost-effective scaling:</strong> replicate a template instead of funding new buildings.</li>
+              <li><strong style="color:#fff;">Utility flexibility:</strong> often easier to provision temporary power and water.</li>
+              <li><strong style="color:#fff;">Faster iteration:</strong> layouts and mounts can change as requirements evolve.</li>
+              <li><strong style="color:#fff;">Access and outreach:</strong> visit producers, classrooms, and community events.</li>
+              <li><strong style="color:#fff;">Operational realism:</strong> build methods where they’ll actually be used.</li>
+            </ul>
+          </div>
+
+          <div class="card" style="background: rgba(0,0,0,0.20);">
+            <h3 style="margin-top:0;">Design priority</h3>
+            <p class="muted measure">
+              Keep the lab easy to maintain, easy to modify, and easy to explain so it can be adopted and sustained locally.
+            </p>
+
+            <h3>Operating principle</h3>
+            <p class="muted measure" style="margin-bottom:0;">
+              Start with one workflow and one deployment site, document everything, then scale by replication.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-wrap" id="what-inside">
+    <div class="flow" aria-hidden="true" style="opacity:0.55;"></div>
+    <div class="container content-grid">
+
+      <div class="card anchor">
+        <h2 style="text-align:left;">What a unit can include</h2>
+        <p class="muted measure">
+          Inventory varies by deployment, but the intent is a modular set of capabilities supporting sampling, basic analysis, and documentation.
+        </p>
+
+        <ul class="muted measure" style="margin: 10px 0 0; padding-left: 18px;">
+          <li><strong style="color:#fff;">Microscopy:</strong> OpenFlexure Microscopes for imaging, teaching, and sample inspection.</li>
+          <li><strong style="color:#fff;">Incubation:</strong> poultry incubators and simple environmental monitoring.</li>
+          <li><strong style="color:#fff;">Sampling + labeling:</strong> consumables, labeling systems, and reproducible record-keeping.</li>
+          <li><strong style="color:#fff;">Power strategy:</strong> grid power, generator integration, and battery-backed critical loads.</li>
+          <li><strong style="color:#fff;">Data capture:</strong> standard logging templates and photo documentation.</li>
+        </ul>
+      </div>
+
+      <div class="card anchor" id="get-involved">
+        <h2 style="text-align:left;">Get involved</h2>
+        <p class="muted measure">
+          If you are a producer, educator, researcher, or local stakeholder interested in hosting a visit, co-designing a workflow, or supporting
+          build-out, I would like to talk. This effort is partnership-driven, and the most useful inputs often come from the realities of daily operations.
+        </p>
+
+        <ul class="muted measure" style="margin: 10px 0 0; padding-left: 18px;">
+          <li><strong style="color:#fff;">Producers:</strong> highest-friction testing needs and what “good enough” looks like.</li>
+          <li><strong style="color:#fff;">Educators:</strong> modules that translate into repeatable, teachable labs.</li>
+          <li><strong style="color:#fff;">Researchers:</strong> minimal instrumentation requirements for field-compatible study designs.</li>
+          <li><strong style="color:#fff;">Advisory groups:</strong> align documentation and QA practices with local expectations.</li>
+        </ul>
+
+        <div class="page-footer">
+          <div class="muted">© PARC. This page describes an evolving program; some capabilities are aspirational and vary by unit.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>

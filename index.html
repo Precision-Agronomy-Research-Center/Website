@@ -9,6 +9,37 @@
   <link href="css/slides.css" rel="stylesheet" />
 
 <link rel="stylesheet" href="css/index_custom.css">
+
+/* The anchor must be a real box */
+.project-card .card-link{
+  display: block;
+  position: relative;
+  z-index: 2;
+}
+
+/* If your track has an overlay/pseudo-element, disable it */
+#carouselTrack::before,
+#carouselTrack::after,
+.carousel::before,
+.carousel::after{
+  pointer-events: none;
+}
+
+/* If you have a gradient “fade” overlay element, it must not catch clicks */
+.carousel-overlay,
+.carousel-fade,
+.carousel-mask{
+  pointer-events: none;
+}
+
+/* Only arrow buttons should capture clicks */
+.carousel-prev,
+.carousel-next{
+  pointer-events: auto;
+  z-index: 5;
+}
+</style>
+
 </head>
 
 <body class="slides horizontal simplifiedMobile animated">

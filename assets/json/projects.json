@@ -3,24 +3,28 @@
     "title": "Ground Control",
     "image": "assets/img/projects/ground_control.png",
     "url": "https://github.com/Precision-Agronomy-Research-Center/LoRaWAN_Lit_Review/tree/main",
-    "subtitle": "We are collaborating with Open Source Ecology to develop a control system for their upcoming open source skid steer platform to support low-cost infrastructure development"
+    "subtitle": "We are collaborating with Open Source Ecology to develop a control system for their upcoming open source skid steer platform to support low-cost infrastructure development",
+    "category": "AgTech"
   },
   {
     "title": "Mobile Laboratories",
     "image": "assets/img/projects/mobile_labs.png",
     "url": "https://parccommons.org/mobile_laboratories",
-    "subtitle": "In partnership with our community, we are developing and helping manage a fleet of mobile laboratories to support on-site agronomy, disaster relief, and community outreach"
+    "subtitle": "In partnership with our community, we are developing and helping manage a fleet of mobile laboratories to support on-site agronomy, disaster relief, and community outreach",
+    "community": "AgTech"
   },
   {
     "title": "Open Microscopy",
     "image": "assets/img/projects/OpenFlexure.png",
     "url": "https://microlab.parccommons.org",
-    "subtitle": "We are working to develop an open microscopy dataset and algorithms for the OpenFlexure microscope to support diy agricultural and health modeling in resource-constrained environments"
+    "subtitle": "We are working to develop an open microscopy dataset and algorithms for the OpenFlexure microscope to support diy agricultural and health modeling in resource-constrained environments",
+    "category": "AgTech"
   },
     {
     "title": "LoRaWAN Collaborative Review",
     "image": "assets/img/projects/LoRaWAN_review.png",
     "url": "https://github.com/Precision-Agronomy-Research-Center/LoRaWAN_Lit_Review/tree/main",
-    "subtitle": "We are writing a collaborative literature review on Long Range Wireless Area Network (LoRaWAN) technology for agricultural monitoring and operator decision support"
+    "subtitle": "We are writing a collaborative literature review on Long Range Wireless Area Network (LoRaWAN) technology for agricultural monitoring and operator decision support",
+    "category": "AgTech"
   }
 ]

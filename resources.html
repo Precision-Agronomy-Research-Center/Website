@@ -6,8 +6,87 @@
   <title>PARC Research</title>
   <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700|Material+Icons" rel="stylesheet">
   <link href="css/slides.css" rel="stylesheet" />
-</head>
 
+  <!-- Minimal add-on styles for accordion behavior + ToC (keeps your existing visual styling) -->
+  <style>
+    /* Make the clickable accordion headers keep the exact "project-box" look */
+    .project-accordion {
+      width: 100%;
+    }
+
+    .project-accordion .project-summary {
+      display: block;
+      cursor: pointer;
+      user-select: none;
+      position: relative;
+      outline: none;
+    }
+
+    /* Remove the default disclosure triangle so the box looks identical */
+    .project-accordion summary {
+      list-style: none;
+    }
+    .project-accordion summary::-webkit-details-marker {
+      display: none;
+    }
+
+    /* Add a subtle chevron using Material Icons without changing box styling */
+    .project-accordion .chev {
+      position: absolute;
+      right: 18px;
+      top: 18px;
+      opacity: 0.7;
+      font-family: "Material Icons";
+      font-size: 22px;
+      line-height: 1;
+      transform: rotate(0deg);
+      transition: transform 160ms ease, opacity 160ms ease;
+      pointer-events: none;
+    }
+    .project-accordion[open] .chev {
+      transform: rotate(180deg);
+      opacity: 0.9;
+    }
+
+    /* Panel content sits *inside* the same box, so styling stays consistent */
+    .project-accordion .project-panel {
+      padding-top: 10px;
+    }
+
+    /* Make nested links feel like part of the card */
+    .project-panel .project-actions {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .project-panel .project-actions a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      font-weight: 500;
+      opacity: 0.95;
+    }
+    .project-panel .project-actions a:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+
+    /* ToC nested lists */
+    #toc-list ul {
+      margin: 8px 0 0 16px;
+      padding: 0;
+    }
+    #toc-list li {
+      margin: 6px 0;
+    }
+    #toc-list a.active {
+      text-decoration: underline;
+      font-weight: 600;
+    }
+  </style>
+</head>
 
 <body class="slides horizontal simplifiedMobile animated resources-page">
 
@@ -67,101 +146,95 @@
         </div>
       </div>
 
-      <div class="container">
-        <h2 style="text-align: left;">Project Library</h2>
-      </div>
-      
-      <!-- ===== PROJECT GRID ===== -->
-      <div class="container project-grid" id="project-grid">
+<!-- ===== PROJECT LIBRARY MOUNT ===== -->
+<div class="container">
+  <h2 style="text-align: left;">Project Library</h2>
+</div>
 
-        <a href="project_pending.html" id="virtual-workstation" class="project-box">
-          <h3><i>Virtual Workstation</i></h3>
-          <p>Cloud-based linux environment accessible from anywhere. Includes open datasets, cloud-based modeling, and reproducible workflows.</p>
-        </a>
+<div class="container" id="project-sections">
+  <!-- populated from assets/json/projects.json -->
+</div>
 
-        <a href="project_pending.html" id="ground-ctrl" class="project-box">
-          <h3><i>"Ground-CTRL"</i> Mobile Robotics Suite</h3>
-          <p>Data-backed ROS2 control stack for agricultural mobile robots. Built to interoperate with PARC’s aerial and sensing systems.</p>
-        </a>
-
-        <a href="project_pending.html" id="dronecoria" class="project-box">
-          <h3>Adapting <i>Dronecoria</i></h3>
-          <p>Reproducing and adapting the open-source Dronecoria platform for ecological intervention with onboard sensing and flight analytics.</p>
-        </a>
-
-        <a href="https://github.com/PubInv/librecorder" id="openflexure" class="project-box">
-          <h3>Adapting the <i>OpenFlexure Microscope</i></h3>
-          <p>Reproducing and adapting the OpenFlexure microscope for field-based agricultural diagnostics with smartphone capture and spectrometry.</p>
-        </a>
-
-        <a href="project_pending.html" id="aerial-topo" class="project-box">
-          <h3><i>Aerial Topography Stack</i></h3>
-          <p>Lightweight aerial mapping suite using open photogrammetry tools for terrain modeling and precision land-use planning.</p>
-        </a>
-
-        <a href="project_pending.html" id="solar-micro" class="project-box">
-          <h3><i>Solar Micro Data Center</i></h3>
-          <p>Modular, solar-powered computing cluster for off-grid data collection and edge analytics using open, low-power hardware.</p>
-        </a>
-
-        <a href="project_pending.html" id="livestock-sensors" class="project-box">
-          <h3><i>Livestock Sensor Network</i></h3>
-          <p>Wearable LoRaWAN-based network for herd monitoring and distributed telemetry analytics.</p>
-        </a>
-
-        <a href="project_pending.html" id="biofab" class="project-box">
-          <h3><i>Bio-Fabrication</i></h3>
-          <p>Adaptation of open biomanufacturing technologies for decentralized agricultural production and bio-fertilizer synthesis.</p>
-        </a>
-
-        <a href="project_pending.html" id="field-lab" class="project-box">
-          <h3>Field Micro-Lab</h3>
-          <p>Mobile laboratory platform integrating open-source microscopy, spectrometry, and soil/forage diagnostics for field use.</p>
-        </a>
-
-        <a href="project_pending.html" id="field-lab" class="project-box">
-          <h3><i>Small Language Model (SLM) Bot</i></h3>
-          <p>Ethical AI use can be achieved with well-scoped, sustainably resourced small language models (SLMs). 
-            PARC's SLM Bot is a prototype chatbot built on open-source models, fine-tuned for agricultural and rural development contexts.
-            See how we deploy the bot in Discord.
-          </p>
-        </a>
-
-
-      </div>
-    </div>
   </section>
+<script src="js/resources.js"></script>
 
-  <!-- ===== AUTO-GENERATE TABLE OF CONTENTS SCRIPT ===== -->
+  <!-- ===== TOC + ACCORDION BEHAVIOR ===== -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const tocList = document.getElementById("toc-list");
-      const projects = document.querySelectorAll(".project-box");
+      const sections = Array.from(document.querySelectorAll(".project-accordion"));
 
-      projects.forEach(box => {
-        const titleEl = box.querySelector("h3");
-        if (titleEl && box.id) {
-          const li = document.createElement("li");
-          const link = document.createElement("a");
-          link.href = `#${box.id}`;
-          link.textContent = titleEl.textContent.replace(/\s+/g, " ").trim();
-          li.appendChild(link);
-          tocList.appendChild(li);
+      // Build ToC: Sections -> Projects
+      sections.forEach(section => {
+        const summary = section.querySelector("summary");
+        const sectionTitle = summary?.querySelector("h3")?.textContent?.replace(/\s+/g, " ").trim();
+        if (!sectionTitle || !section.id) return;
+
+        const sectionLi = document.createElement("li");
+        const sectionLink = document.createElement("a");
+        sectionLink.href = `#${section.id}`;
+        sectionLink.textContent = sectionTitle;
+        sectionLi.appendChild(sectionLink);
+
+        const projects = Array.from(section.querySelectorAll(".project-panel .project-box[id]"));
+        if (projects.length) {
+          const subUl = document.createElement("ul");
+          projects.forEach(p => {
+            const titleEl = p.querySelector("h3");
+            if (!titleEl) return;
+
+            const subLi = document.createElement("li");
+            const subLink = document.createElement("a");
+            subLink.href = `#${p.id}`;
+            subLink.textContent = titleEl.textContent.replace(/\s+/g, " ").trim();
+            subLi.appendChild(subLink);
+            subUl.appendChild(subLi);
+          });
+          sectionLi.appendChild(subUl);
         }
+
+        tocList.appendChild(sectionLi);
       });
 
-      // Optional: highlight current section in ToC
-      const links = tocList.querySelectorAll("a");
-      const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            links.forEach(link => link.classList.remove("active"));
-            const active = tocList.querySelector(`a[href="#${entry.target.id}"]`);
-            if (active) active.classList.add("active");
-          }
-        });
-      }, { rootMargin: "-50% 0px -40% 0px", threshold: 0.1 });
+      // Clicking a ToC project link should auto-open its parent section
+      tocList.addEventListener("click", (e) => {
+        const a = e.target.closest("a");
+        if (!a) return;
 
-      projects.forEach(project => observer.observe(project));
+        const hash = a.getAttribute("href");
+        if (!hash || !hash.startsWith("#")) return;
+
+        const target = document.querySelector(hash);
+        if (!target) return;
+
+        // If the target is a project box, open its nearest details parent
+        const parentDetails = target.closest("details.project-accordion");
+        if (parentDetails) parentDetails.open = true;
+      });
+
+      // Optional: highlight active item in ToC as you scroll
+      const tocLinks = Array.from(tocList.querySelectorAll("a"));
+      const observedTargets = [
+        ...sections.map(s => s),
+        ...Array.from(document.querySelectorAll(".project-panel .project-box[id]"))
+      ];
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          tocLinks.forEach(l => l.classList.remove("active"));
+          const active = tocList.querySelector(`a[href="#${entry.target.id}"]`);
+          if (active) active.classList.add("active");
+
+          // If a project is active, also open its section
+          const parentDetails = entry.target.closest("details.project-accordion");
+          if (parentDetails) parentDetails.open = true;
+        });
+      }, { rootMargin: "-45% 0px -45% 0px", threshold: 0.08 });
+
+      observedTargets.forEach(t => observer.observe(t));
     });
   </script>
+
+</body>
+</html>

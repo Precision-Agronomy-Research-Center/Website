@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PARC Research</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700|Material+Icons" rel="stylesheet">
+  <link href="css/slides.css" rel="stylesheet" />
+</head>
+
+
+<body class="slides horizontal simplifiedMobile animated resources-page">
+
+  <!-- ===== SVG LOGO ===== -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+    <symbol id="logo" viewBox="0 0 400 120" preserveAspectRatio="xMidYMid meet">
+      <rect x="0" y="20" width="200" height="70" fill="#896900" rx="4" />
+      <text x="20" y="75" fill="#fff" font-family="Baskerville, 'Baskerville Old Face', serif" font-weight="700" font-size="48">
+        P A R C
+      </text>
+    </symbol>
+  </svg>
+
+  <!-- ===== HEADER / NAVIGATION ===== -->
+  <header class="banner">
+    <div class="banner-inner">
+      <a href="https://parccommons.org" class="logo-link">
+        <svg class="banner-logo"><use xlink:href="#logo"></use></svg>
+      </a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="people.html">People</a>
+        <a href="resources.html">Research</a>
+        <a href="project_pending.html">Collaborate</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="slide fade-6 kenBurns">
+    <div class="background" style="background-image:url('assets/img/background/PARC_wide.jpg')"></div>
+
+    <div class="content">
+      <!-- ===== TOP SPLIT SECTION ===== -->
+      <div class="container two-column">
+        <!-- LEFT HALF -->
+        <div class="half left">
+          <h1 class="ae-2 huge fromAbove margin-bottom-2" style="font-size: 3vw;">
+            PARC Research
+          </h1>
+          <p class="margin-bottom-2 ae-1 tagline">
+            <span class="opacity-10" style="font-family:Georgia, 'Times New Roman', Times, serif; font-size: 1.5vw;">
+              Browse Free & Open Research <br>
+              Hover To Learn More About Each Project <br>
+              Click To Access Project Files & Documentation
+            </span>
+          </p>
+        </div>
+
+        <!-- RIGHT HALF — DYNAMIC TABLE OF CONTENTS -->
+        <div class="half right toc" id="toc">
+          <h3>Table of Contents</h3>
+          <ul id="toc-list">
+            <!-- Populated automatically -->
+          </ul>
+        </div>
+      </div>
+
+      <div class="container">
+        <h2 style="text-align: left;">Project Library</h2>
+      </div>
+      
+      <!-- ===== PROJECT GRID ===== -->
+      <div class="container project-grid" id="project-grid">
+
+        <a href="project_pending.html" id="virtual-workstation" class="project-box">
+          <h3><i>Virtual Workstation</i></h3>
+          <p>Cloud-based linux environment accessible from anywhere. Includes open datasets, cloud-based modeling, and reproducible workflows.</p>
+        </a>
+
+        <a href="project_pending.html" id="ground-ctrl" class="project-box">
+          <h3><i>"Ground-CTRL"</i> Mobile Robotics Suite</h3>
+          <p>Data-backed ROS2 control stack for agricultural mobile robots. Built to interoperate with PARC’s aerial and sensing systems.</p>
+        </a>
+
+        <a href="project_pending.html" id="dronecoria" class="project-box">
+          <h3>Adapting <i>Dronecoria</i></h3>
+          <p>Reproducing and adapting the open-source Dronecoria platform for ecological intervention with onboard sensing and flight analytics.</p>
+        </a>
+
+        <a href="https://github.com/PubInv/librecorder" id="openflexure" class="project-box">
+          <h3>Adapting the <i>OpenFlexure Microscope</i></h3>
+          <p>Reproducing and adapting the OpenFlexure microscope for field-based agricultural diagnostics with smartphone capture and spectrometry.</p>
+        </a>
+
+        <a href="project_pending.html" id="aerial-topo" class="project-box">
+          <h3><i>Aerial Topography Stack</i></h3>
+          <p>Lightweight aerial mapping suite using open photogrammetry tools for terrain modeling and precision land-use planning.</p>
+        </a>
+
+        <a href="project_pending.html" id="solar-micro" class="project-box">
+          <h3><i>Solar Micro Data Center</i></h3>
+          <p>Modular, solar-powered computing cluster for off-grid data collection and edge analytics using open, low-power hardware.</p>
+        </a>
+
+        <a href="project_pending.html" id="livestock-sensors" class="project-box">
+          <h3><i>Livestock Sensor Network</i></h3>
+          <p>Wearable LoRaWAN-based network for herd monitoring and distributed telemetry analytics.</p>
+        </a>
+
+        <a href="project_pending.html" id="biofab" class="project-box">
+          <h3><i>Bio-Fabrication</i></h3>
+          <p>Adaptation of open biomanufacturing technologies for decentralized agricultural production and bio-fertilizer synthesis.</p>
+        </a>
+
+        <a href="project_pending.html" id="field-lab" class="project-box">
+          <h3>Field Micro-Lab</h3>
+          <p>Mobile laboratory platform integrating open-source microscopy, spectrometry, and soil/forage diagnostics for field use.</p>
+        </a>
+
+        <a href="project_pending.html" id="field-lab" class="project-box">
+          <h3><i>Small Language Model (SLM) Bot</i></h3>
+          <p>Ethical AI use can be achieved with well-scoped, sustainably resourced small language models (SLMs). 
+            PARC's SLM Bot is a prototype chatbot built on open-source models, fine-tuned for agricultural and rural development contexts.
+            See how we deploy the bot in Discord.
+          </p>
+        </a>
+
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== AUTO-GENERATE TABLE OF CONTENTS SCRIPT ===== -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const tocList = document.getElementById("toc-list");
+      const projects = document.querySelectorAll(".project-box");
+
+      projects.forEach(box => {
+        const titleEl = box.querySelector("h3");
+        if (titleEl && box.id) {
+          const li = document.createElement("li");
+          const link = document.createElement("a");
+          link.href = `#${box.id}`;
+          link.textContent = titleEl.textContent.replace(/\s+/g, " ").trim();
+          li.appendChild(link);
+          tocList.appendChild(li);
+        }
+      });
+
+      // Optional: highlight current section in ToC
+      const links = tocList.querySelectorAll("a");
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            links.forEach(link => link.classList.remove("active"));
+            const active = tocList.querySelector(`a[href="#${entry.target.id}"]`);
+            if (active) active.classList.add("active");
+          }
+        });
+      }, { rootMargin: "-50% 0px -40% 0px", threshold: 0.1 });
+
+      projects.forEach(project => observer.observe(project));
+    });
+  </script>

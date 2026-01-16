@@ -185,12 +185,22 @@
         const dx = e.clientX - startX;
         const threshold = Math.min(140, stepPx() * 0.22);
 
+        // NEW: treat small movement as click
+        if (Math.abs(dx) < 6) {
+          const link = e.target.closest("a");
+          if (link) {
+            link.click();
+            return;
+          }
+        }
+
         if (dx < -threshold) next();
         else if (dx > threshold) prev();
         else goTo(index);
 
         startAuto();
       });
+
 
       // Keep alignment correct on resize
       window.addEventListener("resize", () => goTo(index, false));

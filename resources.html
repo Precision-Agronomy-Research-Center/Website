@@ -7,8 +7,82 @@
 
   <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700|Material+Icons" rel="stylesheet">
   <link href="css/slides.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/index_custom.css">
 
-<link rel="stylesheet" href="css/index_custom.css">
+  <style>
+    /* Ensure the 2-pane behavior exists even if other CSS changes */
+    .library-layout {
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+      padding: 18px 0;
+    }
+
+    .library-left {
+      flex: 0 0 260px; /* narrow left rail like your sketch */
+    }
+
+    .library-right {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .category-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* Category buttons: keep card styling, but allow full-width tiles */
+    .category-btn {
+      width: 100%;
+      border: none;
+      padding: 0;
+      background: transparent;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    /* Make the category tiles gold-filled by default (matches your screenshot) */
+    .category-btn .project-box {
+      background: rgba(137, 105, 0, 0.92);
+      color: #fff;
+    }
+    .category-btn .project-box h3,
+    .category-btn .project-box p {
+      color: #fff;
+    }
+
+    /* Active: more obvious than outline */
+    .category-btn.is-active .project-box {
+      background: rgba(137, 105, 0, 1);
+      box-shadow:
+        0 0 0 2px rgba(255, 215, 100, 0.40),
+        0 12px 34px rgba(0, 0, 0, 0.35);
+      transform: translateY(-1px);
+    }
+
+    /* Projects layout */
+    .projects-row {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: stretch;
+    }
+    .projects-row .project-box {
+      flex: 1 1 260px;
+    }
+
+    .projects-empty {
+      padding: 14px;
+    }
+
+    /* Mobile: stack */
+    @media (max-width: 900px) {
+      .library-layout { flex-direction: column; }
+      .library-left { flex: 1 1 auto; width: 100%; }
+    }
+  </style>
 </head>
 
 <body class="slides horizontal simplifiedMobile animated">
@@ -34,21 +108,23 @@
         <a href="resources.html">Research</a>
         <a href="research.html">Collaborate</a>
       </nav>
-    </div>    
     </div>
   </header>
-  
 
   <!-- ===== HERO / TITLE ===== -->
   <section class="slide hero-banner fade-6 kenBurns">
     <div class="background" style="background-image:url('assets/img/background/PARC_narrow.jpg')"></div>
-    <div class="overlay"> 
+
+    <div class="overlay">
       <div class="block" style="margin-top: 5%;">
-          <h1 style="text-align: left;">PARC Resources</h1>
+        <h1 style="text-align: left;">PARC Resources</h1>
+      </div>
     </div>
   </section>
 
+  <!-- ===== MAIN CONTENT STRIP ===== -->
   <section class="action-banner">
+    <div class="container">
       <div class="library-layout" id="project-library">
         <!-- LEFT: categories -->
         <div class="library-left">
@@ -60,37 +136,10 @@
           <div id="projects-panel"></div>
         </div>
       </div>
+    </div>
   </section>
 
   <!-- Data-driven renderer (reads assets/json/projects.json) -->
   <script src="js/resources.js"></script>
-  <!-- Optional: ToC highlighting (safe even if empty) -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const tocList = document.getElementById("toc-list");
-      if (!tocList) return;
-
-      const links = Array.from(tocList.querySelectorAll("a"));
-      if (!links.length) return;
-
-      const targets = links
-        .map(a => document.querySelector(a.getAttribute("href")))
-        .filter(Boolean);
-
-      if (!targets.length) return;
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (!entry.isIntersecting) return;
-          links.forEach(l => l.classList.remove("active"));
-          const active = tocList.querySelector(`a[href="#${entry.target.id}"]`);
-          if (active) active.classList.add("active");
-        });
-      }, { rootMargin: "-45% 0px -45% 0px", threshold: 0.08 });
-
-      targets.forEach(t => observer.observe(t));
-    });
-  </script>
-
 </body>
 </html>

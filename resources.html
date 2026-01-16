@@ -4,73 +4,74 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PARC Research</title>
+
   <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700|Material+Icons" rel="stylesheet">
   <link href="css/slides.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/index_custom.css">
 
-  <!-- Minimal add-on styles for accordion behavior + ToC (keeps your existing visual styling) -->
+  <!-- Page-specific styles (kept minimal + scoped) -->
   <style>
-    /* Make the clickable accordion headers keep the exact "project-box" look */
-    .project-accordion {
-      width: 100%;
-    }
-
-    .project-accordion .project-summary {
-      display: block;
-      cursor: pointer;
-      user-select: none;
-      position: relative;
-      outline: none;
-    }
-
-    /* Remove the default disclosure triangle so the box looks identical */
-    .project-accordion summary {
-      list-style: none;
-    }
-    .project-accordion summary::-webkit-details-marker {
-      display: none;
-    }
-
-    /* Add a subtle chevron using Material Icons without changing box styling */
-    .project-accordion .chev {
-      position: absolute;
-      right: 18px;
-      top: 18px;
-      opacity: 0.7;
-      font-family: "Material Icons";
-      font-size: 22px;
-      line-height: 1;
-      transform: rotate(0deg);
-      transition: transform 160ms ease, opacity 160ms ease;
-      pointer-events: none;
-    }
-    .project-accordion[open] .chev {
-      transform: rotate(180deg);
-      opacity: 0.9;
-    }
-
-    /* Panel content sits *inside* the same box, so styling stays consistent */
-    .project-accordion .project-panel {
-      padding-top: 10px;
-    }
-
-    /* Make nested links feel like part of the card */
-    .project-panel .project-actions {
-      margin-top: 10px;
+    /* 2-pane layout like your sketch */
+    .library-layout {
       display: flex;
-      gap: 10px;
+      gap: 18px;
+      align-items: flex-start;
+    }
+    .library-left {
+      flex: 0 0 240px;
+    }
+    .library-right {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .category-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* Category tiles use the same project-box styling */
+    .category-btn {
+      width: 100%;
+      text-align: left;
+      border: none;
+      cursor: pointer;
+      background: transparent;
+      padding: 0; /* let .project-box control padding */
+    }
+
+    /* Active category: stay highlighted (filled), not just outlined */
+    .category-btn.is-active {
+      outline: none;
+      box-shadow:
+        0 0 0 2px rgba(255, 215, 100, 0.35),
+        0 10px 30px rgba(0, 0, 0, 0.35);
+      transform: translateY(-1px);
+    }
+    /* Fill the inner project-box look without breaking existing styles */
+    .category-btn.is-active .project-box {
+      background: rgba(137, 105, 0, 0.92);
+      color: #fff;
+    }
+    .category-btn.is-active .project-box h3,
+    .category-btn.is-active .project-box p {
+      color: #fff;
+    }
+
+    /* Projects row/grid on the right */
+    .projects-row {
+      display: flex;
+      gap: 14px;
       flex-wrap: wrap;
+      align-items: stretch;
     }
-    .project-panel .project-actions a {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      text-decoration: none;
-      font-weight: 500;
-      opacity: 0.95;
+    .projects-row .project-box {
+      flex: 1 1 240px;
     }
-    .project-panel .project-actions a:hover {
-      opacity: 1;
-      text-decoration: underline;
+
+    .projects-empty {
+      padding: 14px;
     }
 
     /* ToC nested lists */
@@ -86,87 +87,19 @@
       font-weight: 600;
     }
 
-    /* 2-pane layout like your sketch */
-.library-layout {
-  display: flex;
-  gap: 18px;
-  align-items: flex-start;
-}
-
-/* Left column */
-.library-left {
-  flex: 0 0 240px; /* width of left tabs */
-}
-
-/* Right content */
-.library-right {
-  flex: 1 1 auto;
-  min-width: 0;
-}
-
-/* Vertical category buttons using same project-box styling */
-.category-list {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-/* Make buttons look like cards without changing your card styling */
-.category-btn {
-  width: 100%;
-  text-align: left;
-  border: none;
-  cursor: pointer;
-  background: transparent; /* project-box should handle the visuals */
-}
-
-/* Active state (minimal, non-invasive) */
-.category-btn.is-active {
-  outline: 2px solid rgba(255,255,255,0.25);
-  outline-offset: 2px;
-  background-color: #896900;
-}
-
-/* Projects row/grid on the right */
-.projects-row {
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap; /* wrap if too many */
-  align-items: stretch;
-}
-
-/* Make project cards in the row a reasonable width */
-.projects-row .project-box {
-  flex: 1 1 240px;
-}
-
-/* Empty state */
-.projects-empty {
-  padding: 14px;
-}
-
-/* Mobile: stack left above right */
-@media (max-width: 900px) {
-  .library-layout {
-    flex-direction: column;
-  }
-  .library-left {
-    flex: 1 1 auto;
-  }
-}
-
+    @media (max-width: 900px) {
+      .library-layout { flex-direction: column; }
+      .library-left { flex: 1 1 auto; }
+    }
   </style>
-  <link rel="stylesheet" href="css/index_custom.css">
-
 </head>
 
 <body class="slides horizontal simplifiedMobile animated resources-page">
-
   <!-- ===== SVG LOGO ===== -->
-  <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
-    <symbol id="logo" viewBox="0 0 400 120" preserveAspectRatio="xMidYMid meet">
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
+    <symbol id="logo" viewBox="-50 -10 300 120" preserveAspectRatio="xMidYMid meet">
       <rect x="0" y="20" width="200" height="70" fill="#896900" rx="4" />
-      <text x="20" y="75" fill="#fff" font-family="Baskerville, 'Baskerville Old Face', serif" font-weight="700" font-size="48">
+      <text x="20" y="72" fill="#fff" font-family="Baskerville, 'Baskerville Old Face', serif" font-weight="700" font-size="48">
         P A R C
       </text>
     </symbol>
@@ -188,13 +121,12 @@
     </div>
   </header>
 
-  <!-- ===== HERO SECTION ===== -->
-  <section class="slide fade-6 kenBurns">
+  <!-- ===== HERO / TITLE ===== -->
+  <section class="slide hero-banner fade-6 kenBurns">
     <div class="background" style="background-image:url('assets/img/background/PARC_wide.jpg')"></div>
 
-    <div class="content">
-      <!-- ===== TOP SPLIT SECTION ===== -->
-      <div class="container two-column">
+    <div class="overlay">
+      <div class="container two-column" style="margin-top: 5%;">
         <!-- LEFT HALF -->
         <div class="half left">
           <h1 class="ae-2 huge fromAbove margin-bottom-2" style="font-size: 3vw;">
@@ -208,122 +140,64 @@
             </span>
           </p>
         </div>
-          </section>
 
-  <!-- ===== ACTION BUTTON STRIP ===== -->
-  <section class="action-banner">
-    <div class="container">
-
-        <!-- RIGHT HALF — DYNAMIC TABLE OF CONTENTS -->
+        <!-- RIGHT HALF — TABLE OF CONTENTS -->
         <div class="half right toc" id="toc">
           <h3>Table of Contents</h3>
-          <ul id="toc-list">
-            <!-- Populated automatically -->
-          </ul>
+          <ul id="toc-list"></ul>
         </div>
       </div>
-
-<div class="container">
-  <h2 style="text-align: left;">Project Library</h2>
-
-  <div class="library-layout" id="project-library">
-    <!-- LEFT: categories -->
-    <div class="library-left">
-      <div id="category-list" class="category-list">
-        <!-- buttons inserted by JS -->
-      </div>
     </div>
-
-    <!-- RIGHT: projects -->
-    <div class="library-right">
-      <div id="projects-panel">
-        <!-- projects inserted by JS -->
-      </div>
-    </div>
-  </div>
-</div>
-
-
   </section>
-<script src="js/resources.js"></script>
 
-  <!-- ===== TOC + ACCORDION BEHAVIOR ===== -->
+  <!-- ===== ACTION / CONTENT STRIP (matches your home-page pattern) ===== -->
+  <section class="action-banner">
+    <div class="container">
+      <h2 style="text-align: left;">Project Library</h2>
+
+      <div class="library-layout" id="project-library">
+        <!-- LEFT: categories -->
+        <div class="library-left">
+          <div id="category-list" class="category-list"></div>
+        </div>
+
+        <!-- RIGHT: projects -->
+        <div class="library-right">
+          <div id="projects-panel"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Data-driven renderer (reads assets/json/projects.json) -->
+  <script src="js/resources.js"></script>
+
+  <!-- Optional: ToC highlighting (safe even if empty) -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const tocList = document.getElementById("toc-list");
-      const sections = Array.from(document.querySelectorAll(".project-accordion"));
+      if (!tocList) return;
 
-      // Build ToC: Sections -> Projects
-      sections.forEach(section => {
-        const summary = section.querySelector("summary");
-        const sectionTitle = summary?.querySelector("h3")?.textContent?.replace(/\s+/g, " ").trim();
-        if (!sectionTitle || !section.id) return;
+      const links = Array.from(tocList.querySelectorAll("a"));
+      if (!links.length) return;
 
-        const sectionLi = document.createElement("li");
-        const sectionLink = document.createElement("a");
-        sectionLink.href = `#${section.id}`;
-        sectionLink.textContent = sectionTitle;
-        sectionLi.appendChild(sectionLink);
+      const targets = links
+        .map(a => document.querySelector(a.getAttribute("href")))
+        .filter(Boolean);
 
-        const projects = Array.from(section.querySelectorAll(".project-panel .project-box[id]"));
-        if (projects.length) {
-          const subUl = document.createElement("ul");
-          projects.forEach(p => {
-            const titleEl = p.querySelector("h3");
-            if (!titleEl) return;
-
-            const subLi = document.createElement("li");
-            const subLink = document.createElement("a");
-            subLink.href = `#${p.id}`;
-            subLink.textContent = titleEl.textContent.replace(/\s+/g, " ").trim();
-            subLi.appendChild(subLink);
-            subUl.appendChild(subLi);
-          });
-          sectionLi.appendChild(subUl);
-        }
-
-        tocList.appendChild(sectionLi);
-      });
-
-      // Clicking a ToC project link should auto-open its parent section
-      tocList.addEventListener("click", (e) => {
-        const a = e.target.closest("a");
-        if (!a) return;
-
-        const hash = a.getAttribute("href");
-        if (!hash || !hash.startsWith("#")) return;
-
-        const target = document.querySelector(hash);
-        if (!target) return;
-
-        // If the target is a project box, open its nearest details parent
-        const parentDetails = target.closest("details.project-accordion");
-        if (parentDetails) parentDetails.open = true;
-      });
-
-      // Optional: highlight active item in ToC as you scroll
-      const tocLinks = Array.from(tocList.querySelectorAll("a"));
-      const observedTargets = [
-        ...sections.map(s => s),
-        ...Array.from(document.querySelectorAll(".project-panel .project-box[id]"))
-      ];
+      if (!targets.length) return;
 
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (!entry.isIntersecting) return;
-          tocLinks.forEach(l => l.classList.remove("active"));
+          links.forEach(l => l.classList.remove("active"));
           const active = tocList.querySelector(`a[href="#${entry.target.id}"]`);
           if (active) active.classList.add("active");
-
-          // If a project is active, also open its section
-          const parentDetails = entry.target.closest("details.project-accordion");
-          if (parentDetails) parentDetails.open = true;
         });
       }, { rootMargin: "-45% 0px -45% 0px", threshold: 0.08 });
 
-      observedTargets.forEach(t => observer.observe(t));
+      targets.forEach(t => observer.observe(t));
     });
   </script>
-
 </body>
 </html>

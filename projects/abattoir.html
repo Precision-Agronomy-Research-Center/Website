@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PARC Home</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700|Material+Icons" rel="stylesheet">
+  <link href="css/slides.css" rel="stylesheet" />
+
+<link rel="stylesheet" href="css/index_custom.css">
+</head>
+
+<body class="slides horizontal simplifiedMobile animated">
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
+    <symbol id="logo" viewBox="-50 -10 300 120" preserveAspectRatio="xMidYMid meet">
+      <rect x="0" y="20" width="200" height="70" fill="#896900" rx="4" />
+      <text x="20" y="72" fill="#fff" font-family="Baskerville, 'Baskerville Old Face', serif" font-weight="700" font-size="48">
+        P A R C
+      </text>
+    </symbol>
+  </svg>
+
+  <!-- ===== HEADER / NAVIGATION ===== -->
+  <header class="banner">
+    <div class="banner-inner">
+      <a href="https://parccommons.org" class="logo-link">
+        <svg class="banner-logo"><use xlink:href="#logo"></use></svg>
+      </a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="people.html">People</a>
+        <a href="resources.html">Research</a>
+        <a href="research.html">Collaborate</a>
+      </nav>
+    </div>    
+    </div>
+  </header>
+  
+
+  <!-- ===== HERO / TITLE ===== -->
+  <section class="slide hero-banner fade-6 kenBurns">
+    <div class="background" style="background-image:url('assets/img/background/PARC_narrow.jpg')"></div>
+    <div class="overlay"> 
+      <div class="block" style="margin-top: 5%;">
+          <h1 style="text-align: center;">The Precision Agronomy Research Center</h1>
+      </div>
+          <div class="block block--panel" >
+          <p style="text-align: center; margin-top: -1%;"><i> A cyber-physical private commons where scientists, engineers, and farmers collaborate
+          </i></p>
+          </div>
+    </div>
+  </section>
+
+  <!-- ===== ACTION BUTTON STRIP ===== -->
+  <section class="action-banner">
+    <div class="container">
+      <h3 class="section-title">Explore:</h3>
+      <div class="action-row">
+        <a href="research.html" class="action-btn"><i>RESEARCH</i></a>
+        <a href="resources.html" class="action-btn"> <i>RESOURCES</i></a>
+        <a href="research.html" class="action-btn"><i>EDUCATION CENTER</i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROJECT CAROUSEL ===== -->
+  <section class="carousel-banner">
+    <div class="container">
+      <h3 class="section-title">Recent Initiatives:</h3>
+
+      <div class="carousel-shell" aria-label="Activities carousel">
+        <button class="car-btn" id="carPrev" type="button" aria-label="Previous">&#8249;</button>
+
+        <div class="carousel-viewport" id="carViewport">
+          <div class="carousel-track" id="carouselTrack">
+
+            <!-- <div class="project-card">Mobile Agronomy Lab</div>
+            <div class="project-card">Open Soil Sensors</div>
+            <div class="project-card">Rural Diagnostics</div>
+            <div class="project-card">Drone Field Mapping</div> -->
+          </div>
+        </div>
+
+        <button class="car-btn" id="carNext" type="button" aria-label="Next">&#8250;</button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      const track = document.getElementById("carouselTrack");
+      const viewport = document.getElementById("carViewport");
+      const prevBtn = document.getElementById("carPrev");
+      const nextBtn = document.getElementById("carNext");
+
+      if (!track || !viewport) return;
+
+      let index = 0;
+      let timer = null;
+
+      function cards() { return Array.from(track.children); }
+
+      function stepPx() {
+        const first = cards()[0];
+        if (!first) return 0;
+        const gap = parseFloat(getComputedStyle(track).gap || "0") || 0;
+        return first.getBoundingClientRect().width + gap;
+      }
+
+      function maxIndex() {
+        return Math.max(0, cards().length - 1);
+      }
+
+      function clamp(i) {
+        return Math.max(0, Math.min(maxIndex(), i));
+      }
+
+      function goTo(i, animate = true) {
+        index = clamp(i);
+        track.style.transition = animate ? "transform 420ms ease" : "none";
+        track.style.transform = `translateX(${-index * stepPx()}px)`;
+      }
+
+      function next() {
+        const m = maxIndex();
+        goTo(index >= m ? 0 : index + 1);
+      }
+
+      function prev() {
+        const m = maxIndex();
+        goTo(index <= 0 ? m : index - 1);
+      }
+
+      function startAuto() {
+        stopAuto();
+        timer = setInterval(next, 4500);
+      }
+
+      function stopAuto() {
+        if (timer) clearInterval(timer);
+        timer = null;
+      }
+
+      // Buttons
+      if (nextBtn) nextBtn.addEventListener("click", () => { stopAuto(); next(); startAuto(); });
+      if (prevBtn) prevBtn.addEventListener("click", () => { stopAuto(); prev(); startAuto(); });
+
+      // Pause on hover (desktop)
+      viewport.addEventListener("mouseenter", stopAuto);
+      viewport.addEventListener("mouseleave", startAuto);
+
+      // Drag / swipe support (no scrollbar)
+      let dragging = false;
+      let startX = 0;
+      let startOffset = 0;
+
+      function currentOffsetX() {
+        const tr = getComputedStyle(track).transform;
+        if (!tr || tr === "none") return 0;
+        const m = new DOMMatrixReadOnly(tr);
+        return m.m41 || 0;
+      }
+
+      viewport.addEventListener("pointerdown", (e) => {
+        dragging = true;
+        viewport.setPointerCapture(e.pointerId);
+        startX = e.clientX;
+        startOffset = currentOffsetX();
+        track.style.transition = "none";
+        stopAuto();
+      });
+
+      viewport.addEventListener("pointermove", (e) => {
+        if (!dragging) return;
+        const dx = e.clientX - startX;
+        track.style.transform = `translateX(${startOffset + dx}px)`;
+      });
+
+      viewport.addEventListener("pointerup", (e) => {
+        if (!dragging) return;
+        dragging = false;
+
+        const dx = e.clientX - startX;
+        const threshold = Math.min(140, stepPx() * 0.22);
+
+        if (dx < -threshold) next();
+        else if (dx > threshold) prev();
+        else goTo(index);
+
+        startAuto();
+      });
+
+      // Keep alignment correct on resize
+      window.addEventListener("resize", () => goTo(index, false));
+
+      // Init
+      goTo(0, false);
+      startAuto();
+    })();
+  </script>
+<script src="js/carousel.js"></script>
+</body>
+</html>

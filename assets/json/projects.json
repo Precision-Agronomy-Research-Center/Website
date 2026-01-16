@@ -2,7 +2,7 @@
   {
     "title": "Ground Control",
     "image": "assets/img/projects/ground_control.png",
-    "url": "https://github.com/Precision-Agronomy-Research-Center/LoRaWAN_Lit_Review/tree/main",
+    "url": "https://groundcontrol.parccommons.org",
     "subtitle": "We are collaborating with Open Source Ecology to develop a control system for their upcoming open source skid steer platform to support low-cost infrastructure development",
     "category": "AgTech"
   },

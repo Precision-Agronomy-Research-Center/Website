@@ -85,6 +85,75 @@
       text-decoration: underline;
       font-weight: 600;
     }
+
+    /* 2-pane layout like your sketch */
+.library-layout {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+/* Left column */
+.library-left {
+  flex: 0 0 240px; /* width of left tabs */
+}
+
+/* Right content */
+.library-right {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Vertical category buttons using same project-box styling */
+.category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Make buttons look like cards without changing your card styling */
+.category-btn {
+  width: 100%;
+  text-align: left;
+  border: none;
+  cursor: pointer;
+  background: transparent; /* project-box should handle the visuals */
+}
+
+/* Active state (minimal, non-invasive) */
+.category-btn.is-active {
+  outline: 2px solid rgba(255,255,255,0.25);
+  outline-offset: 2px;
+}
+
+/* Projects row/grid on the right */
+.projects-row {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap; /* wrap if too many */
+  align-items: stretch;
+}
+
+/* Make project cards in the row a reasonable width */
+.projects-row .project-box {
+  flex: 1 1 240px;
+}
+
+/* Empty state */
+.projects-empty {
+  padding: 14px;
+}
+
+/* Mobile: stack left above right */
+@media (max-width: 900px) {
+  .library-layout {
+    flex-direction: column;
+  }
+  .library-left {
+    flex: 1 1 auto;
+  }
+}
+
   </style>
 </head>
 
@@ -146,14 +215,26 @@
         </div>
       </div>
 
-<!-- ===== PROJECT LIBRARY MOUNT ===== -->
 <div class="container">
   <h2 style="text-align: left;">Project Library</h2>
+
+  <div class="library-layout" id="project-library">
+    <!-- LEFT: categories -->
+    <div class="library-left">
+      <div id="category-list" class="category-list">
+        <!-- buttons inserted by JS -->
+      </div>
+    </div>
+
+    <!-- RIGHT: projects -->
+    <div class="library-right">
+      <div id="projects-panel">
+        <!-- projects inserted by JS -->
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="container" id="project-sections">
-  <!-- populated from assets/json/projects.json -->
-</div>
 
   </section>
 <script src="js/resources.js"></script>

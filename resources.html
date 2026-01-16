@@ -3,99 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PARC Research</title>
+  <title>PARC Resources</title>
 
   <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700|Material+Icons" rel="stylesheet">
   <link href="css/slides.css" rel="stylesheet" />
-  <link rel="stylesheet" href="css/index_custom.css">
 
-  <!-- Page-specific styles (kept minimal + scoped) -->
-  <style>
-    /* 2-pane layout like your sketch */
-    .library-layout {
-      display: flex;
-      gap: 18px;
-      align-items: flex-start;
-    }
-    .library-left {
-      flex: 0 0 240px;
-    }
-    .library-right {
-      flex: 1 1 auto;
-      min-width: 0;
-    }
-
-    .category-list {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    /* Category tiles use the same project-box styling */
-    .category-btn {
-      width: 100%;
-      text-align: left;
-      border: none;
-      cursor: pointer;
-      background: transparent;
-      padding: 0; /* let .project-box control padding */
-    }
-
-    /* Active category: stay highlighted (filled), not just outlined */
-    .category-btn.is-active {
-      outline: none;
-      box-shadow:
-        0 0 0 2px rgba(255, 215, 100, 0.35),
-        0 10px 30px rgba(0, 0, 0, 0.35);
-      transform: translateY(-1px);
-    }
-    /* Fill the inner project-box look without breaking existing styles */
-    .category-btn.is-active .project-box {
-      background: rgba(137, 105, 0, 0.92);
-      color: #fff;
-    }
-    .category-btn.is-active .project-box h3,
-    .category-btn.is-active .project-box p {
-      color: #fff;
-    }
-
-    /* Projects row/grid on the right */
-    .projects-row {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-      align-items: stretch;
-    }
-    .projects-row .project-box {
-      flex: 1 1 240px;
-    }
-
-    .projects-empty {
-      padding: 14px;
-    }
-
-    /* ToC nested lists */
-    #toc-list ul {
-      margin: 8px 0 0 16px;
-      padding: 0;
-    }
-    #toc-list li {
-      margin: 6px 0;
-    }
-    #toc-list a.active {
-      text-decoration: underline;
-      font-weight: 600;
-    }
-
-    @media (max-width: 900px) {
-      .library-layout { flex-direction: column; }
-      .library-left { flex: 1 1 auto; }
-    }
-  </style>
+<link rel="stylesheet" href="css/index_custom.css">
 </head>
 
-<body class="slides horizontal simplifiedMobile animated resources-page">
-  <!-- ===== SVG LOGO ===== -->
+<body class="slides horizontal simplifiedMobile animated">
   <svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
     <symbol id="logo" viewBox="-50 -10 300 120" preserveAspectRatio="xMidYMid meet">
       <rect x="0" y="20" width="200" height="70" fill="#896900" rx="4" />
@@ -116,45 +32,23 @@
         <a href="about.html">About</a>
         <a href="people.html">People</a>
         <a href="resources.html">Research</a>
-        <a href="project_pending.html">Collaborate</a>
+        <a href="research.html">Collaborate</a>
       </nav>
+    </div>    
     </div>
   </header>
+  
 
   <!-- ===== HERO / TITLE ===== -->
   <section class="slide hero-banner fade-6 kenBurns">
-    <div class="background" style="background-image:url('assets/img/background/PARC_wide.jpg')"></div>
-
-    <div class="overlay">
-      <div class="container two-column" style="margin-top: 5%;">
-        <!-- LEFT HALF -->
-        <div class="half left">
-          <h1 class="ae-2 huge fromAbove margin-bottom-2" style="font-size: 3vw;">
-            PARC Research
-          </h1>
-          <p class="margin-bottom-2 ae-1 tagline">
-            <span class="opacity-10" style="font-family:Georgia, 'Times New Roman', Times, serif; font-size: 1.5vw;">
-              Browse Free & Open Research <br>
-              Hover To Learn More About Each Project <br>
-              Click To Access Project Files & Documentation
-            </span>
-          </p>
-        </div>
-
-        <!-- RIGHT HALF — TABLE OF CONTENTS -->
-        <div class="half right toc" id="toc">
-          <h3>Table of Contents</h3>
-          <ul id="toc-list"></ul>
-        </div>
-      </div>
+    <div class="background" style="background-image:url('assets/img/background/PARC_narrow.jpg')"></div>
+    <div class="overlay"> 
+      <div class="block" style="margin-top: 5%;">
+          <h1 style="text-align: left;">PARC Resources</h1>
     </div>
   </section>
 
-  <!-- ===== ACTION / CONTENT STRIP (matches your home-page pattern) ===== -->
   <section class="action-banner">
-    <div class="container">
-      <h2 style="text-align: left;">Project Library</h2>
-
       <div class="library-layout" id="project-library">
         <!-- LEFT: categories -->
         <div class="library-left">
@@ -166,12 +60,10 @@
           <div id="projects-panel"></div>
         </div>
       </div>
-    </div>
   </section>
 
   <!-- Data-driven renderer (reads assets/json/projects.json) -->
   <script src="js/resources.js"></script>
-
   <!-- Optional: ToC highlighting (safe even if empty) -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -199,5 +91,6 @@
       targets.forEach(t => observer.observe(t));
     });
   </script>
+
 </body>
 </html>

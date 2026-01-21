@@ -7,39 +7,39 @@
 
   <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700|Material+Icons" rel="stylesheet">
   <link href="css/slides.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/index_custom.css">
 
-<link rel="stylesheet" href="css/index_custom.css">
+  <!-- FIX: wrap your inline CSS in a real <style> tag -->
+  <style>
+    /* The anchor must be a real box */
+    .project-card .card-link{
+      display: block;
+      position: relative;
+      z-index: 2;
+    }
 
-/* The anchor must be a real box */
-.project-card .card-link{
-  display: block;
-  position: relative;
-  z-index: 2;
-}
+    /* If your track has an overlay/pseudo-element, disable it */
+    #carouselTrack::before,
+    #carouselTrack::after,
+    .carousel::before,
+    .carousel::after{
+      pointer-events: none;
+    }
 
-/* If your track has an overlay/pseudo-element, disable it */
-#carouselTrack::before,
-#carouselTrack::after,
-.carousel::before,
-.carousel::after{
-  pointer-events: none;
-}
+    /* If you have a gradient “fade” overlay element, it must not catch clicks */
+    .carousel-overlay,
+    .carousel-fade,
+    .carousel-mask{
+      pointer-events: none;
+    }
 
-/* If you have a gradient “fade” overlay element, it must not catch clicks */
-.carousel-overlay,
-.carousel-fade,
-.carousel-mask{
-  pointer-events: none;
-}
-
-/* Only arrow buttons should capture clicks */
-.carousel-prev,
-.carousel-next{
-  pointer-events: auto;
-  z-index: 5;
-}
-</style>
-
+    /* Only arrow buttons should capture clicks */
+    .carousel-prev,
+    .carousel-next{
+      pointer-events: auto;
+      z-index: 5;
+    }
+  </style>
 </head>
 
 <body class="slides horizontal simplifiedMobile animated">
@@ -62,25 +62,24 @@
         <a href="index.html">Home</a>
         <a href="about.html">About</a>
         <a href="people.html">People</a>
-        <a href="resources.html">Research</a>
-        <a href="research.html">Collaborate</a>
+        <a href="research.html">Research</a>
+        <a href="collaborate.html">Collaborate</a>
       </nav>
-    </div>    
     </div>
   </header>
-  
 
   <!-- ===== HERO / TITLE ===== -->
   <section class="slide hero-banner fade-6 kenBurns">
     <div class="background" style="background-image:url('assets/img/background/PARC_narrow.jpg')"></div>
-    <div class="overlay"> 
+    <div class="overlay">
       <div class="block" style="margin-top: 5%;">
-          <h1 style="text-align: center;">The Precision Agronomy Research Center</h1>
+        <h1 style="text-align: center;">The Precision Agronomy Research Center</h1>
       </div>
-          <div class="block block--panel" >
-          <p style="text-align: center; margin-top: -1%;"><i> A cyber-physical private commons where scientists, engineers, and farmers collaborate
-          </i></p>
-          </div>
+      <div class="block block--panel">
+        <p style="text-align: center; margin-top: -1%;"><i>
+          A cyber-physical private commons where scientists, engineers, and farmers collaborate
+        </i></p>
+      </div>
     </div>
   </section>
 
@@ -90,8 +89,8 @@
       <h3 class="section-title">Explore:</h3>
       <div class="action-row">
         <a href="research.html" class="action-btn"><i>RESEARCH</i></a>
-        <a href="resources.html" class="action-btn"> <i>RESOURCES</i></a>
-        <a href="research.html" class="action-btn"><i>EDUCATION CENTER</i></a>
+        <a href="resources.html" class="action-btn"><i>RESOURCES</i></a>
+        <a href="education.html" class="action-btn"><i>EDUCATION CENTER</i></a>
       </div>
     </div>
   </section>
@@ -106,11 +105,7 @@
 
         <div class="carousel-viewport" id="carViewport">
           <div class="carousel-track" id="carouselTrack">
-
-            <!-- <div class="project-card">Mobile Agronomy Lab</div>
-            <div class="project-card">Open Soil Sensors</div>
-            <div class="project-card">Rural Diagnostics</div>
-            <div class="project-card">Drone Field Mapping</div> -->
+            <!-- cards injected by js -->
           </div>
         </div>
 
@@ -174,15 +169,12 @@
         timer = null;
       }
 
-      // Buttons
       if (nextBtn) nextBtn.addEventListener("click", () => { stopAuto(); next(); startAuto(); });
       if (prevBtn) prevBtn.addEventListener("click", () => { stopAuto(); prev(); startAuto(); });
 
-      // Pause on hover (desktop)
       viewport.addEventListener("mouseenter", stopAuto);
       viewport.addEventListener("mouseleave", startAuto);
 
-      // Drag / swipe support (no scrollbar)
       let dragging = false;
       let startX = 0;
       let startOffset = 0;
@@ -216,13 +208,9 @@
         const dx = e.clientX - startX;
         const threshold = Math.min(140, stepPx() * 0.22);
 
-        // NEW: treat small movement as click
         if (Math.abs(dx) < 6) {
           const link = e.target.closest("a");
-          if (link) {
-            link.click();
-            return;
-          }
+          if (link) { link.click(); return; }
         }
 
         if (dx < -threshold) next();
@@ -232,15 +220,12 @@
         startAuto();
       });
 
-
-      // Keep alignment correct on resize
       window.addEventListener("resize", () => goTo(index, false));
-
-      // Init
       goTo(0, false);
       startAuto();
     })();
   </script>
-<script src="js/carousel.js"></script>
+
+  <script src="js/carousel.js"></script>
 </body>
 </html>
